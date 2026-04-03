@@ -118,14 +118,9 @@ export function Experience() {
                 />
 
                 <div
-                  className="p-6 rounded-2xl transition-all duration-300"
-                  style={{
-                    background: "linear-gradient(145deg, rgba(17,24,39,0.9), rgba(11,15,25,0.5))",
-                    border: "1px solid rgba(255,255,255,0.05)",
-                    backdropFilter: "blur(10px)",
-                  }}
+                  className="p-6 rounded-2xl transition-all duration-300 glass-card"
                   onMouseEnter={e => (e.currentTarget.style.borderColor = `${exp.accent}40`)}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)")}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
                 >
                   {/* Header row */}
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">

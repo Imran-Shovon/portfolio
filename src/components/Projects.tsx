@@ -102,12 +102,7 @@ export function Projects() {
           {projects.map((project) => (
             <div
               key={project.title}
-              className="group relative rounded-2xl overflow-hidden transition-all duration-400 cursor-pointer"
-              style={{
-                background: "linear-gradient(145deg, rgba(17,24,39,0.9), rgba(11,15,25,0.6))",
-                border: "1px solid rgba(255,255,255,0.05)",
-                backdropFilter: "blur(10px)",
-              }}
+              className="group relative rounded-2xl overflow-hidden transition-all duration-400 cursor-pointer glass-card"
               onMouseEnter={e => {
                 (e.currentTarget.style.transform) = "translateY(-6px)";
                 (e.currentTarget.style.borderColor) = `${project.accent}40`;
@@ -115,8 +110,8 @@ export function Projects() {
               }}
               onMouseLeave={e => {
                 (e.currentTarget.style.transform) = "";
-                (e.currentTarget.style.borderColor) = "rgba(255,255,255,0.05)";
-                (e.currentTarget.style.boxShadow) = "";
+                (e.currentTarget.style.borderColor) = "var(--border)";
+                (e.currentTarget.style.boxShadow) = "0 4px 30px rgba(0,0,0,0.12)";
               }}
             >
               {/* Card top gradient strip */}
@@ -125,7 +120,7 @@ export function Projects() {
               {/* Card body */}
               <div className="p-6">
                 <div className={`h-44 rounded-xl mb-5 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative overflow-hidden`}
-                  style={{ background: `radial-gradient(circle at 30% 50%, ${project.accent}20, rgba(11,15,25,0.8))` }}
+                  style={{ background: `radial-gradient(circle at 30% 50%, ${project.accent}20, var(--card-solid))` }}
                 >
                   <div className="absolute inset-0 flex items-center justify-center opacity-20">
                     <span className="text-7xl font-bold text-white" style={{ fontFamily: "var(--font-sora)", color: project.accent }}>
@@ -137,7 +132,7 @@ export function Projects() {
                   </div>
                   {/* Overlay on hover */}
                   <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ backgroundColor: "rgba(11,15,25,0.8)", backdropFilter: "blur(4px)" }}
+                    style={{ backgroundColor: "var(--overlay-bg)", backdropFilter: "blur(4px)" }}
                   >
                     <a href={project.live} target="_blank" rel="noopener noreferrer"
                       className="flex items-center gap-2 px-4 py-2 rounded-full text-sm text-white font-medium transition-all"
@@ -148,7 +143,7 @@ export function Projects() {
                     </a>
                     <a href={project.github} target="_blank" rel="noopener noreferrer"
                       className="flex items-center gap-2 px-4 py-2 rounded-full text-sm text-white font-medium transition-all"
-                      style={{ backgroundColor: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)" }}
+                      style={{ backgroundColor: "var(--overlay-bg)", border: "1px solid var(--border-hover)", color: "var(--color-text)" }}
                       onClick={e => e.stopPropagation()}
                     >
                       <GithubIcon size={14} /> Code

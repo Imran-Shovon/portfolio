@@ -40,7 +40,8 @@ export function Contact() {
     setTimeout(() => setSubmitted(false), 4000);
   };
 
-  const inputClass = "w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-gray-600 outline-none transition-all duration-300";
+  const inputClass = "w-full rounded-xl px-4 py-3 text-sm outline-none transition-all duration-300 text-text placeholder-gray-500";
+  const inputStyle = { background: "var(--input-bg)", border: "1px solid var(--input-border)" };
 
   return (
     <section id="contact" ref={sectionRef} className="py-24 relative" style={{ backgroundColor: "var(--color-base)" }}>
@@ -72,9 +73,9 @@ export function Contact() {
                 { icon: MapPin, label: "Location", value: "Dhaka, Bangladesh", color: "var(--color-accent-cyan)" },
               ].map(({ icon: Icon, label, value, color }) => (
                 <div key={label} className="flex items-center gap-4 p-4 rounded-xl transition-all duration-300"
-                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
+                  style={{ background: "var(--tag-bg)", border: "1px solid var(--border)" }}
                   onMouseEnter={e => (e.currentTarget.style.borderColor = `${color}30`)}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)")}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
                 >
                   <div className="p-2.5 rounded-lg" style={{ backgroundColor: `${color}15` }}>
                     <Icon size={18} style={{ color }} />
@@ -96,9 +97,9 @@ export function Contact() {
               ].map(({ icon, href, label, color }) => (
                 <a key={label} href={href}
                   className="p-3 rounded-xl text-gray-500 transition-all duration-300"
-                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
+                  style={{ background: "var(--tag-bg)", border: "1px solid var(--border)" }}
                   onMouseEnter={e => { (e.currentTarget.style.color) = color; (e.currentTarget.style.borderColor) = `${color}40`; }}
-                  onMouseLeave={e => { (e.currentTarget.style.color) = ""; (e.currentTarget.style.borderColor) = "rgba(255,255,255,0.06)"; }}
+                  onMouseLeave={e => { (e.currentTarget.style.color) = ""; (e.currentTarget.style.borderColor) = "var(--border)"; }}
                   aria-label={label}
                 >
                   {icon}
@@ -107,15 +108,8 @@ export function Contact() {
             </div>
           </div>
 
-          {/* Form */}
           <div ref={formRef} className="lg:col-span-3">
-            <div className="p-8 rounded-2xl"
-              style={{
-                background: "linear-gradient(145deg, rgba(17,24,39,0.9), rgba(11,15,25,0.5))",
-                border: "1px solid rgba(255,255,255,0.06)",
-                backdropFilter: "blur(12px)",
-              }}
-            >
+            <div className="p-8 rounded-2xl glass-card">
               {submitted ? (
                 <div className="flex flex-col items-center justify-center h-64 text-center">
                   <div className="text-5xl mb-4">✅</div>
@@ -132,9 +126,9 @@ export function Contact() {
                         placeholder="Your name"
                         value={formData.name}
                         onChange={handleChange}
-                        className={inputClass}
+                        className={inputClass} style={inputStyle}
                         onFocus={e => (e.currentTarget.style.borderColor = "var(--color-accent-blue)")}
-                        onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")}
+                        onBlur={e => (e.currentTarget.style.borderColor = "var(--input-border)")}
                       />
                     </div>
                     <div>
@@ -144,9 +138,9 @@ export function Contact() {
                         placeholder="your@email.com"
                         value={formData.email}
                         onChange={handleChange}
-                        className={inputClass}
+                        className={inputClass} style={inputStyle}
                         onFocus={e => (e.currentTarget.style.borderColor = "var(--color-accent-blue)")}
-                        onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")}
+                        onBlur={e => (e.currentTarget.style.borderColor = "var(--input-border)")}
                       />
                     </div>
                   </div>
@@ -158,9 +152,9 @@ export function Contact() {
                       placeholder="What's this about?"
                       value={formData.subject}
                       onChange={handleChange}
-                      className={inputClass}
+                      className={inputClass} style={inputStyle}
                       onFocus={e => (e.currentTarget.style.borderColor = "var(--color-accent-purple)")}
-                      onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")}
+                      onBlur={e => (e.currentTarget.style.borderColor = "var(--input-border)")}
                     />
                   </div>
 
@@ -171,9 +165,9 @@ export function Contact() {
                       placeholder="Tell me about your project or idea..."
                       value={formData.message}
                       onChange={handleChange}
-                      className={inputClass + " resize-none"}
+                      className={inputClass + " resize-none"} style={inputStyle}
                       onFocus={e => (e.currentTarget.style.borderColor = "var(--color-accent-cyan)")}
-                      onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")}
+                      onBlur={e => (e.currentTarget.style.borderColor = "var(--input-border)")}
                     />
                   </div>
 

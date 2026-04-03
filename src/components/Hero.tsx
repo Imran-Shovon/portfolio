@@ -87,9 +87,9 @@ export function Hero() {
                 href="/resume.pdf"
                 target="_blank"
                 className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold transition-all duration-300 border text-white"
-                style={{ borderColor: "rgba(255,255,255,0.15)", backgroundColor: "rgba(255,255,255,0.05)" }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)")}
-                onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)")}
+                style={{ borderColor: "var(--border-alt)", backgroundColor: "var(--tag-bg)" }}
+                onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--border-hover)")}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border-alt)")}
               >
                 Download Resume
                 <Download size={18} className="group-hover:-translate-y-0.5 transition-transform" />
@@ -97,9 +97,9 @@ export function Hero() {
               <a
                 href="#contact"
                 className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold transition-all duration-300 border text-gray-300"
-                style={{ borderColor: "rgba(255,255,255,0.1)", backgroundColor: "rgba(255,255,255,0.03)" }}
-                onMouseEnter={e => { (e.currentTarget.style.color = "white"); (e.currentTarget.style.borderColor = "var(--color-accent-cyan)"); }}
-                onMouseLeave={e => { (e.currentTarget.style.color = ""); (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"); }}
+                style={{ borderColor: "var(--border)", backgroundColor: "var(--tag-bg)" }}
+                onMouseEnter={e => { (e.currentTarget.style.color = "var(--color-text)"); (e.currentTarget.style.borderColor = "var(--color-accent-cyan)"); }}
+                onMouseLeave={e => { (e.currentTarget.style.color = ""); (e.currentTarget.style.borderColor = "var(--border)"); }}
               >
                 Contact Me
                 <Mail size={18} />
@@ -108,7 +108,7 @@ export function Hero() {
 
             {/* Social Icons */}
             <div ref={socialsRef} className="flex items-center gap-5 justify-center lg:justify-start">
-              <a href="https://github.com/" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-white transition-colors duration-300">
+              <a href="https://github.com/" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-colors duration-300" onMouseEnter={e=>(e.currentTarget.style.color="var(--color-text)")} onMouseLeave={e=>(e.currentTarget.style.color="")}>
                 <GithubIcon size={22} />
               </a>
               <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-colors duration-300" style={{}} onMouseEnter={e=>(e.currentTarget.style.color="var(--color-accent-blue)")} onMouseLeave={e=>(e.currentTarget.style.color="")}>
@@ -126,16 +126,8 @@ export function Hero() {
               <div className="absolute inset-0 rounded-full border border-blue-500/20 animate-[spin_12s_linear_infinite]" />
               <div className="absolute inset-3 rounded-full border border-purple-500/20 animate-[spin_18s_linear_infinite_reverse]" />
               <div className="absolute inset-6 rounded-full border border-cyan-500/10 animate-[spin_25s_linear_infinite]" />
-              <div className="absolute inset-10 rounded-full overflow-hidden" style={{
-                border: "1px solid rgba(255,255,255,0.1)",
-              }}>
-                <Image
-                  src="/image/shovon.jpeg"
-                  alt="Imran Shovon"
-                  fill
-                  className="object-cover object-top"
-                  priority
-                />
+              <div className="absolute inset-10 rounded-full overflow-hidden" style={{ border: "1px solid var(--border)" }}>
+                <Image src="/image/shovon.jpeg" alt="Imran Shovon" fill className="object-cover object-top" priority />
               </div>
               {/* Decorative dots */}
               <div className="absolute top-4 right-4 w-3 h-3 rounded-full" style={{ backgroundColor: "var(--color-accent-blue)" }} />

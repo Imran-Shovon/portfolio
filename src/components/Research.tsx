@@ -80,14 +80,9 @@ export function Research() {
           {papers.map((paper, i) => (
             <div
               key={i}
-              className="relative p-8 rounded-2xl transition-all duration-300"
-              style={{
-                background: "linear-gradient(145deg, rgba(11,15,25,0.9), rgba(17,24,39,0.5))",
-                border: "1px solid rgba(255,255,255,0.05)",
-                backdropFilter: "blur(12px)",
-              }}
+              className="relative p-8 rounded-2xl transition-all duration-300 glass-card"
               onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(6,182,212,0.25)")}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)")}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
             >
               {/* Status badge */}
               <div className="flex flex-wrap items-center justify-between gap-4 mb-5">

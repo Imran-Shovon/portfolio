@@ -81,14 +81,9 @@ export function About() {
           {/* Stats */}
           <div ref={statsRef} className="grid grid-cols-2 gap-6">
             {stats.map(({ value, label, icon: Icon }) => (
-              <div key={label} className="group relative p-6 rounded-2xl transition-all duration-300 cursor-default"
-                style={{
-                  background: "linear-gradient(145deg, rgba(17,24,39,0.8), rgba(11,15,25,0.4))",
-                  border: "1px solid rgba(255,255,255,0.05)",
-                  backdropFilter: "blur(10px)",
-                }}
+              <div key={label} className="group relative p-6 rounded-2xl transition-all duration-300 cursor-default glass-card"
                 onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(59,130,246,0.3)")}
-                onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)")}
+                onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
               >
                 <Icon size={24} className="mb-3" style={{ color: "var(--color-accent-blue)" }} />
                 <div className="text-4xl font-bold text-white mb-1" style={{ fontFamily: "var(--font-sora)" }}>{value}</div>

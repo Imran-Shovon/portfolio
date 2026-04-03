@@ -74,14 +74,9 @@ export function Education() {
           {educationData.map((edu) => (
             <div
               key={edu.degree}
-              className="relative p-8 rounded-2xl transition-all duration-300"
-              style={{
-                background: "linear-gradient(145deg, rgba(17,24,39,0.9), rgba(11,15,25,0.5))",
-                border: "1px solid rgba(255,255,255,0.05)",
-                backdropFilter: "blur(12px)",
-              }}
+              className="relative p-8 rounded-2xl transition-all duration-300 glass-card"
               onMouseEnter={e => (e.currentTarget.style.borderColor = `${edu.accent}40`)}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)")}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
             >
               {/* Left accent bar */}
               <div className="absolute left-0 top-6 bottom-6 w-1 rounded-full" style={{ backgroundColor: edu.accent }} />

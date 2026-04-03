@@ -99,14 +99,9 @@ export function Skills() {
           {skillCategories.map(({ title, icon: Icon, color, skills }) => (
             <div
               key={title}
-              className="p-6 rounded-2xl transition-all duration-300"
-              style={{
-                background: "linear-gradient(145deg, rgba(11,15,25,0.8), rgba(17,24,39,0.4))",
-                border: "1px solid rgba(255,255,255,0.05)",
-                backdropFilter: "blur(10px)",
-              }}
+              className="p-6 rounded-2xl transition-all duration-300 glass-card cursor-default"
               onMouseEnter={e => (e.currentTarget.style.borderColor = `${color}40`)}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)")}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2 rounded-lg" style={{ backgroundColor: `${color}20` }}>

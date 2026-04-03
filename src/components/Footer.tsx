@@ -19,7 +19,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative pt-16 pb-8" style={{ backgroundColor: "var(--color-surface)", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+    <footer className="relative pt-16 pb-8" style={{ backgroundColor: "var(--color-surface)", borderTop: "1px solid var(--border)" }}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
@@ -40,9 +40,9 @@ export function Footer() {
               ].map(({ icon, href, label }) => (
                 <a key={label} href={href} aria-label={label}
                   className="p-2.5 rounded-xl text-gray-600 transition-all duration-300"
-                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
-                  onMouseEnter={e => { (e.currentTarget.style.color) = "white"; (e.currentTarget.style.borderColor) = "rgba(59,130,246,0.4)"; }}
-                  onMouseLeave={e => { (e.currentTarget.style.color) = ""; (e.currentTarget.style.borderColor) = "rgba(255,255,255,0.06)"; }}
+                  style={{ background: "var(--tag-bg)", border: "1px solid var(--border)" }}
+                  onMouseEnter={e => { (e.currentTarget.style.color) = "var(--color-text)"; (e.currentTarget.style.borderColor) = "var(--color-accent-blue)"; }}
+                  onMouseLeave={e => { (e.currentTarget.style.color) = ""; (e.currentTarget.style.borderColor) = "var(--border)"; }}
                 >
                   {icon}
                 </a>
@@ -58,7 +58,9 @@ export function Footer() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="flex items-center gap-1 text-sm text-gray-500 hover:text-white transition-colors duration-200 group"
+                  className="flex items-center gap-1 text-sm text-gray-500 transition-colors duration-200 group"
+                  onMouseEnter={e=>(e.currentTarget.style.color="var(--color-text)")}
+                  onMouseLeave={e=>(e.currentTarget.style.color="")}
                 >
                   <ChevronRight size={12} className="text-blue-500 group-hover:translate-x-0.5 transition-transform" />
                   {link.name}
@@ -71,7 +73,7 @@ export function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-white uppercase tracking-widest mb-5">Contact</h4>
             <div className="flex flex-col gap-3 text-sm text-gray-500">
-              <div>📧 <a href="mailto:imran.shovon@email.com" className="hover:text-white transition-colors">imran.shovon@email.com</a></div>
+              <div>📧 <a href="mailto:imran.shovon@email.com" className="transition-colors" onMouseEnter={e=>(e.currentTarget.style.color="var(--color-text)")} onMouseLeave={e=>(e.currentTarget.style.color="")}>imran.shovon@email.com</a></div>
               <div>📍 Dhaka, Bangladesh</div>
               <div>🕒 Available for freelance & full-time</div>
             </div>
@@ -79,7 +81,7 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6" style={{ borderTop: "1px solid var(--border)" }}>
           <p className="text-xs text-gray-600">
             © {year} Imran Shovon. All rights reserved. Built with Next.js & GSAP.
           </p>
@@ -87,10 +89,10 @@ export function Footer() {
           {/* Back to top */}
           <button
             onClick={scrollToTop}
-            className="group flex items-center gap-2 text-xs text-gray-600 hover:text-white transition-all duration-300 px-4 py-2 rounded-full"
-            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)" }}
-            onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(59,130,246,0.4)")}
-            onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)")}
+            className="group flex items-center gap-2 text-xs text-gray-600 transition-all duration-300 px-4 py-2 rounded-full"
+            style={{ background: "var(--tag-bg)", border: "1px solid var(--border)" }}
+            onMouseEnter={e => { (e.currentTarget.style.borderColor = "var(--color-accent-blue)"); (e.currentTarget.style.color = "var(--color-text)"); }}
+            onMouseLeave={e => { (e.currentTarget.style.borderColor = "var(--border)"); (e.currentTarget.style.color = ""); }}
           >
             Back to Top
             <span className="group-hover:-translate-y-0.5 transition-transform inline-block">↑</span>

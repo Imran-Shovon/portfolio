@@ -8,10 +8,10 @@ import { Code, Globe, Briefcase, FileText } from "lucide-react";
 gsap.registerPlugin(ScrollTrigger);
 
 const stats = [
-  { value: "2+", label: "Years Experience", icon: Briefcase },
+  { value: "3+", label: "Years Experience", icon: Briefcase },
   { value: "20+", label: "Projects Completed", icon: Code },
   { value: "3+", label: "Research Papers", icon: FileText },
-  { value: "15+", label: "Technologies Mastered", icon: Globe },
+  { value: "10+", label: "Technologies Mastered", icon: Globe },
 ];
 
 export function About() {
@@ -60,7 +60,7 @@ export function About() {
           {/* Text */}
           <div ref={textRef}>
             <p className="text-gray-400 text-lg leading-relaxed mb-6">
-              I&apos;m <span className="text-white font-semibold">Imran Shovon</span>, a passionate Frontend Developer based in Bangladesh with a deep love for building premium digital experiences. My journey started with a curiosity for how things work on the web, and has evolved into a professional career crafting high-quality applications.
+              I&apos;m <span className="text-white font-semibold">Md Shovon Biswas</span>, a passionate Frontend Developer based in Bangladesh with a deep love for building premium digital experiences. My journey started with a curiosity for how things work on the web, and has evolved into a professional career crafting high-quality applications.
             </p>
             <p className="text-gray-400 text-lg leading-relaxed mb-6">
               Beyond developing beautiful interfaces, I actively engage in academic research, exploring the intersection of <span className="font-semibold" style={{ color: "var(--color-accent-cyan)" }}>technology and data science</span>. I believe that strong engineering and thoughtful UX design are inseparable.

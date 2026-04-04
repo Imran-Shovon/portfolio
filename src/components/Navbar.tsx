@@ -7,31 +7,31 @@ import Link from "next/link";
 import { useTheme, type Theme } from "@/components/ThemeProvider";
 
 const navLinks = [
-  { name: "Home",       href: "#home" },
-  { name: "About",      href: "#about" },
-  { name: "Skills",     href: "#skills" },
+  { name: "Home", href: "#home" },
+  { name: "About", href: "#about" },
+  { name: "Skills", href: "#skills" },
   { name: "Experience", href: "#experience" },
-  { name: "Projects",   href: "#projects" },
-  { name: "Education",  href: "#education" },
-  { name: "Research",   href: "#research" },
-  { name: "Contact",    href: "#contact" },
+  { name: "Projects", href: "#projects" },
+  { name: "Education", href: "#education" },
+  { name: "Research", href: "#research" },
+  { name: "Contact", href: "#contact" },
 ];
 
 const themeOptions: { id: Theme; label: string; Icon: typeof Sun }[] = [
-  { id: "dark",   label: "Dark",   Icon: Moon    },
-  { id: "light",  label: "Light",  Icon: Sun     },
+  { id: "dark", label: "Dark", Icon: Moon },
+  { id: "light", label: "Light", Icon: Sun },
   { id: "system", label: "System", Icon: Monitor },
 ];
 
 export function Navbar() {
-  const [isOpen,       setIsOpen]       = useState(false);
-  const [scrolled,     setScrolled]     = useState(false);
-  const [activeSection, setActive]      = useState("home");
-  const [themeOpen,    setThemeOpen]    = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActive] = useState("home");
+  const [themeOpen, setThemeOpen] = useState(false);
 
-  const navRef   = useRef<HTMLElement>(null);
-  const menuRef  = useRef<HTMLDivElement>(null);
-  const desktopDropRef  = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const desktopDropRef = useRef<HTMLDivElement>(null);
   const mobileDropRef = useRef<HTMLDivElement>(null);
 
   const { theme: currentTheme, setTheme } = useTheme();
@@ -77,7 +77,7 @@ export function Navbar() {
       const target = e.target as Node;
       const clickedOutsideDesktop = desktopDropRef.current && !desktopDropRef.current.contains(target);
       const clickedOutsideMobile = mobileDropRef.current && !mobileDropRef.current.contains(target);
-      
+
       if (clickedOutsideDesktop && clickedOutsideMobile) {
         setThemeOpen(false);
       }
@@ -111,13 +111,13 @@ export function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="text-2xl font-bold tracking-tight select-none" style={{ fontFamily: "var(--font-sora)" }}>
-          <span style={{ color: "var(--color-accent-blue)" }}>I</span>
-          <span style={{ color: "var(--color-text)" }}>mran</span>
+          <span style={{ color: "var(--color-accent-blue)" }}>S</span>
+          <span style={{ color: "var(--color-text)" }}>HOVON</span>
           <span style={{ color: "var(--color-accent-cyan)" }}>.</span>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-4">
           {navLinks.map(({ name, href }) => {
             const id = href.replace("#", "");
             const isActive = activeSection === id;
@@ -261,7 +261,7 @@ export function Navbar() {
               </div>
             )}
           </div>
-          
+
           <button
             className="transition-colors p-1"
             style={{ color: "var(--text-muted)" }}

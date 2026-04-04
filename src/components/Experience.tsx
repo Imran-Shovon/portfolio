@@ -10,8 +10,8 @@ gsap.registerPlugin(ScrollTrigger);
 const experiences = [
   {
     role: "Frontend Developer",
-    company: "Tech Solutions Ltd.",
-    duration: "Jan 2024 – Present",
+    company: "Redliime Solutions",
+    duration: "November 2025 – Present",
     type: "Full-time",
     accent: "var(--color-accent-blue)",
     responsibilities: [
@@ -20,25 +20,25 @@ const experiences = [
       "Collaborated with backend teams to integrate RESTful APIs",
       "Implemented GSAP animations and interactive user experiences",
     ],
-    tech: ["React", "Next.js", "TypeScript", "Tailwind CSS", "GSAP"],
+    tech: ["React", "Next.js", "TypeScript", "JavaScript", "Astro", "Bootstrap", "Tailwind CSS", "Animation"],
   },
   {
     role: "Junior Web Developer",
-    company: "Creative Agency BD",
-    duration: "Jun 2023 – Dec 2023",
-    type: "Part-time",
+    company: "Gigatech Limited",
+    duration: "February 2023 – November 2025",
+    type: "Full-time",
     accent: "var(--color-accent-purple)",
     responsibilities: [
       "Developed responsive landing pages and marketing websites for clients",
       "Worked with design teams to translate Figma mockups into pixel-perfect code",
       "Optimized website performance and improved load times by 30%",
     ],
-    tech: ["HTML", "CSS", "JavaScript", "Bootstrap", "Figma"],
+    tech: ["HTML", "CSS", "JavaScript", "Bootstrap", "Angular", "React"],
   },
   {
     role: "Web Development Intern",
-    company: "StartupHub Bangladesh",
-    duration: "Jan 2023 – May 2023",
+    company: "Gigatech Limited",
+    duration: "November 2022 – January 2023",
     type: "Internship",
     accent: "var(--color-accent-cyan)",
     responsibilities: [
@@ -46,7 +46,7 @@ const experiences = [
       "Gained hands-on experience with Git workflows and agile development",
       "Created reusable component libraries for the front-end team",
     ],
-    tech: ["React", "CSS", "Git", "GitHub"],
+    tech: ["Python", "Django", "JavaScript",],
   },
 ];
 

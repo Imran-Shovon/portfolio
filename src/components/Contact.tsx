@@ -68,8 +68,8 @@ export function Contact() {
 
             <div className="flex flex-col gap-4">
               {[
-                { icon: Mail, label: "Email", value: "imran.shovon@email.com", color: "var(--color-accent-blue)" },
-                { icon: Phone, label: "Phone", value: "+880 1XXX-XXXXXX", color: "var(--color-accent-purple)" },
+                { icon: Mail, label: "Email", value: "shovonbiswas.cse@gmail.com", color: "var(--color-accent-blue)" },
+                { icon: Phone, label: "Phone", value: "+880 1776752696", color: "var(--color-accent-purple)" },
                 { icon: MapPin, label: "Location", value: "Dhaka, Bangladesh", color: "var(--color-accent-cyan)" },
               ].map(({ icon: Icon, label, value, color }) => (
                 <div key={label} className="flex items-center gap-4 p-4 rounded-xl transition-all duration-300"
@@ -93,7 +93,7 @@ export function Contact() {
               {[
                 { icon: <GithubIcon size={20} />, href: "#", label: "GitHub", color: "white" },
                 { icon: <LinkedinIcon size={20} />, href: "#", label: "LinkedIn", color: "var(--color-accent-blue)" },
-                { icon: <Mail size={20} />, href: "mailto:imran@email.com", label: "Email", color: "var(--color-accent-purple)" },
+                { icon: <Mail size={20} />, href: "mailto:shovonbiswas.cse@gmail.com", label: "Email", color: "var(--color-accent-purple)" },
               ].map(({ icon, href, label, color }) => (
                 <a key={label} href={href}
                   className="p-3 rounded-xl text-gray-500 transition-all duration-300"

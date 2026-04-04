@@ -10,10 +10,10 @@ gsap.registerPlugin(ScrollTrigger);
 const educationData = [
   {
     degree: "Bachelor of Science in Computer Science & Engineering",
-    university: "University of Dhaka",
-    duration: "2021 – Present",
-    expectedGrad: "Expected 2025",
-    cgpa: "3.72 / 4.00",
+    university: "Banglaesh University of Business and Technology (BUBT)",
+    duration: "2018 – 2022",
+    expectedGrad: "Completed 2022",
+    cgpa: "3.74 / 4.00",
     achievements: [
       "Merit Scholarship Recipient (2022, 2023)",
       "Best Final Year Project Award Nominee",
@@ -24,10 +24,10 @@ const educationData = [
   },
   {
     degree: "Higher Secondary Certificate (HSC)",
-    university: "Dhaka College",
-    duration: "2018 – 2020",
-    expectedGrad: "Completed 2020",
-    cgpa: "5.00 / 5.00",
+    university: "Chuadanga Govt. College",
+    duration: "2014 – 2016",
+    expectedGrad: "Completed 2016",
+    cgpa: "4.42 / 5.00",
     achievements: [
       "Perfect GPA in Science stream",
       "Board Scholarship recipient",

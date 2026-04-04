@@ -21,10 +21,10 @@ export function Hero() {
   useEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    tl.fromTo(greetRef.current,   { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, delay: 0.6 })
-      .fromTo(title1Ref.current,  { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9 }, "-=0.4")
-      .fromTo(title2Ref.current,  { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9 }, "-=0.6")
-      .fromTo(descRef.current,    { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, "-=0.5")
+    tl.fromTo(greetRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, delay: 0.6 })
+      .fromTo(title1Ref.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9 }, "-=0.4")
+      .fromTo(title2Ref.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9 }, "-=0.6")
+      .fromTo(descRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, "-=0.5")
       .fromTo(buttonsRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, "-=0.4")
       .fromTo(socialsRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, "-=0.3")
       .fromTo(profileRef.current, { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.1, ease: "back.out(1.4)" }, "-=1.2");
@@ -43,12 +43,12 @@ export function Hero() {
       <div ref={blob3Ref} className="absolute -z-0 top-[50%] left-[40%] w-[300px] h-[300px] rounded-full blur-[120px] opacity-10" style={{ backgroundColor: "var(--color-accent-cyan)" }} />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 w-full">
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-16">
-          
+        <div className="flex flex-col-reverse lg:flex-row items-start justify-between gap-16">
+
           {/* Text */}
           <div className="w-full lg:w-3/5 text-center lg:text-left">
             <p ref={greetRef} className="text-base md:text-lg font-semibold tracking-widest uppercase mb-4" style={{ color: "var(--color-accent-blue)" }}>
-              Hi, I&apos;m Imran Shovon
+              Hi, I&apos;m Shovon
             </p>
 
             <h1 ref={title1Ref} className="text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-tight mb-2 text-white" style={{ fontFamily: "var(--font-sora)" }}>
@@ -108,13 +108,13 @@ export function Hero() {
 
             {/* Social Icons */}
             <div ref={socialsRef} className="flex items-center gap-5 justify-center lg:justify-start">
-              <a href="https://github.com/" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-colors duration-300" onMouseEnter={e=>(e.currentTarget.style.color="var(--color-text)")} onMouseLeave={e=>(e.currentTarget.style.color="")}>
+              <a href="https://github.com/" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-colors duration-300" onMouseEnter={e => (e.currentTarget.style.color = "var(--color-text)")} onMouseLeave={e => (e.currentTarget.style.color = "")}>
                 <GithubIcon size={22} />
               </a>
-              <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-colors duration-300" style={{}} onMouseEnter={e=>(e.currentTarget.style.color="var(--color-accent-blue)")} onMouseLeave={e=>(e.currentTarget.style.color="")}>
+              <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer" className="text-gray-500 transition-colors duration-300" style={{}} onMouseEnter={e => (e.currentTarget.style.color = "var(--color-accent-blue)")} onMouseLeave={e => (e.currentTarget.style.color = "")}>
                 <LinkedinIcon size={22} />
               </a>
-              <a href="#contact" className="text-gray-500 transition-colors duration-300" onMouseEnter={e=>(e.currentTarget.style.color="var(--color-accent-purple)")} onMouseLeave={e=>(e.currentTarget.style.color="")}>
+              <a href="#contact" className="text-gray-500 transition-colors duration-300" onMouseEnter={e => (e.currentTarget.style.color = "var(--color-accent-purple)")} onMouseLeave={e => (e.currentTarget.style.color = "")}>
                 <Mail size={22} />
               </a>
             </div>

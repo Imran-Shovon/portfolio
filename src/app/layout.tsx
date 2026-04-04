@@ -14,8 +14,8 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  title: "Imran Shovon | Premium Portfolio",
-  description: "Personal premium portfolio of Imran Shovon - Frontend Developer & Research Enthusiast.",
+  title: "Shovon | Premium Portfolio",
+  description: "Personal premium portfolio of Md Shovon Biswas - Frontend Developer & Research Enthusiast.",
 };
 
 export default function RootLayout({

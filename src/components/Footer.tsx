@@ -25,8 +25,8 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="text-2xl font-bold mb-4" style={{ fontFamily: "var(--font-sora)" }}>
-              <span style={{ color: "var(--color-accent-blue)" }}>I</span>
-              <span style={{ color: "var(--color-text)" }}>mran</span>
+              <span style={{ color: "var(--color-accent-blue)" }}>S</span>
+              <span style={{ color: "var(--color-text)" }}>hovon</span>
               <span style={{ color: "var(--color-accent-cyan)" }}>.</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed mb-5">
@@ -36,7 +36,7 @@ export function Footer() {
               {[
                 { icon: <GithubIcon size={18} />, href: "#", label: "GitHub" },
                 { icon: <LinkedinIcon size={18} />, href: "#", label: "LinkedIn" },
-                { icon: <Mail size={18} />, href: "mailto:imran@email.com", label: "Email" },
+                { icon: <Mail size={18} />, href: "mailto:shovonbiswas.cse@gmail.com", label: "Email" },
               ].map(({ icon, href, label }) => (
                 <a key={label} href={href} aria-label={label}
                   className="p-2.5 rounded-xl text-gray-600 transition-all duration-300"
@@ -59,8 +59,8 @@ export function Footer() {
                   key={link.name}
                   href={link.href}
                   className="flex items-center gap-1 text-sm text-gray-500 transition-colors duration-200 group"
-                  onMouseEnter={e=>(e.currentTarget.style.color="var(--color-text)")}
-                  onMouseLeave={e=>(e.currentTarget.style.color="")}
+                  onMouseEnter={e => (e.currentTarget.style.color = "var(--color-text)")}
+                  onMouseLeave={e => (e.currentTarget.style.color = "")}
                 >
                   <ChevronRight size={12} className="text-blue-500 group-hover:translate-x-0.5 transition-transform" />
                   {link.name}
@@ -73,7 +73,7 @@ export function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-white uppercase tracking-widest mb-5">Contact</h4>
             <div className="flex flex-col gap-3 text-sm text-gray-500">
-              <div>📧 <a href="mailto:imran.shovon@email.com" className="transition-colors" onMouseEnter={e=>(e.currentTarget.style.color="var(--color-text)")} onMouseLeave={e=>(e.currentTarget.style.color="")}>imran.shovon@email.com</a></div>
+              <div>📧 <a href="mailto:shovonbiswas.cse@gmail.com" className="transition-colors" onMouseEnter={e => (e.currentTarget.style.color = "var(--color-text)")} onMouseLeave={e => (e.currentTarget.style.color = "")}>shovonbiswas.cse@gmail.com</a></div>
               <div>📍 Dhaka, Bangladesh</div>
               <div>🕒 Available for freelance & full-time</div>
             </div>
@@ -83,7 +83,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6" style={{ borderTop: "1px solid var(--border)" }}>
           <p className="text-xs text-gray-600">
-            © {year} Imran Shovon. All rights reserved. Built with Next.js & GSAP.
+            © {year} Md Shovon Biswas. All rights reserved. Built with Next.js & GSAP.
           </p>
 
           {/* Back to top */}

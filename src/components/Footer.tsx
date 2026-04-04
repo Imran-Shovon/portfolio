@@ -20,7 +20,7 @@ export function Footer() {
 
   return (
     <footer className="relative pt-16 pb-8" style={{ backgroundColor: "var(--color-surface)", borderTop: "1px solid var(--border)" }}>
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-5xl mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div>

@@ -46,7 +46,7 @@
 }
 
 /* ─── Light Theme ────────────────────────────────────────────────────────── */
-[data-theme="light"] {
+html[data-theme="light"] {
   --color-base:    #F0F4F8;
   --color-surface: #FFFFFF;
   --color-text:    #0F172A;

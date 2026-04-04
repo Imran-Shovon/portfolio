@@ -85,7 +85,7 @@ export function Skills() {
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full blur-[150px] opacity-5" style={{ backgroundColor: "var(--color-accent-blue)" }} />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <div className="relative z-10 max-w-5xl mx-auto px-6">
         <div className="flex flex-col items-center mb-16">
           <span className="text-sm font-semibold tracking-widest uppercase mb-3" style={{ color: "var(--color-accent-purple)" }}>What I Know</span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 text-center" style={{ fontFamily: "var(--font-sora)" }}>

@@ -46,7 +46,7 @@ export function About() {
         <div className="absolute top-1/2 right-[-10%] w-[400px] h-[400px] rounded-full blur-[140px] opacity-10" style={{ backgroundColor: "var(--color-accent-purple)" }} />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
+      <div className="relative z-10 max-w-5xl mx-auto px-6">
         {/* Heading */}
         <div className="flex flex-col items-center mb-16">
           <span className="text-sm font-semibold tracking-widest uppercase mb-3" style={{ color: "var(--color-accent-blue)" }}>Who I Am</span>

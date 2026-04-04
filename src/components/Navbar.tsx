@@ -107,7 +107,7 @@ export function Navbar() {
         paddingBottom: "1.25rem",
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div className="max-w-5xl mx-auto px-6 flex items-center justify-between">
 
         {/* Logo */}
         <Link href="/" className="text-2xl font-bold tracking-tight select-none" style={{ fontFamily: "var(--font-sora)" }}>

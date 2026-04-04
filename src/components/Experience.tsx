@@ -85,7 +85,7 @@ export function Experience() {
         <div className="absolute bottom-0 left-[-10%] w-[400px] h-[400px] rounded-full blur-[140px] opacity-10" style={{ backgroundColor: "var(--color-accent-cyan)" }} />
       </div>
 
-      <div className="relative z-10 max-w-3xl mx-auto px-6">
+      <div className="relative z-10 max-w-5xl mx-auto px-6">
         {/* Heading */}
         <div className="flex flex-col items-center mb-16">
           <span className="text-sm font-semibold tracking-widest uppercase mb-3" style={{ color: "var(--color-accent-cyan)" }}>Career Path</span>

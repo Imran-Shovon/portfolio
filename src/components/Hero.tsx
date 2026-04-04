@@ -42,7 +42,7 @@ export function Hero() {
       <div ref={blob2Ref} className="absolute -z-0 bottom-[10%] right-[-5%] w-[500px] h-[500px] rounded-full blur-[150px] opacity-20" style={{ backgroundColor: "var(--color-accent-purple)" }} />
       <div ref={blob3Ref} className="absolute -z-0 top-[50%] left-[40%] w-[300px] h-[300px] rounded-full blur-[120px] opacity-10" style={{ backgroundColor: "var(--color-accent-cyan)" }} />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
+      <div className="relative z-10 max-w-5xl mx-auto px-6 w-full">
         <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-16">
           
           {/* Text */}
@@ -71,7 +71,7 @@ export function Hero() {
             </p>
 
             {/* CTA Buttons */}
-            <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
+            <div ref={buttonsRef} className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-12">
               <a
                 href="#projects"
                 className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-white font-semibold transition-all duration-300"
@@ -86,8 +86,8 @@ export function Hero() {
               <a
                 href="/resume.pdf"
                 target="_blank"
-                className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold transition-all duration-300 border text-white"
-                style={{ borderColor: "var(--border-alt)", backgroundColor: "var(--tag-bg)" }}
+                className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold transition-all duration-300 border"
+                style={{ borderColor: "var(--border-alt)", backgroundColor: "var(--tag-bg)", color: "var(--color-text)" }}
                 onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--border-hover)")}
                 onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border-alt)")}
               >
@@ -96,10 +96,10 @@ export function Hero() {
               </a>
               <a
                 href="#contact"
-                className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold transition-all duration-300 border text-gray-300"
-                style={{ borderColor: "var(--border)", backgroundColor: "var(--tag-bg)" }}
+                className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold transition-all duration-300 border"
+                style={{ borderColor: "var(--border)", backgroundColor: "var(--tag-bg)", color: "var(--text-muted)" }}
                 onMouseEnter={e => { (e.currentTarget.style.color = "var(--color-text)"); (e.currentTarget.style.borderColor = "var(--color-accent-cyan)"); }}
-                onMouseLeave={e => { (e.currentTarget.style.color = ""); (e.currentTarget.style.borderColor = "var(--border)"); }}
+                onMouseLeave={e => { (e.currentTarget.style.color = "var(--text-muted)"); (e.currentTarget.style.borderColor = "var(--border)"); }}
               >
                 Contact Me
                 <Mail size={18} />

@@ -123,16 +123,19 @@ export function Hero() {
           {/* Profile Visual */}
           <div ref={profileRef} className="w-full lg:w-2/5 flex justify-center">
             <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-[380px] lg:h-[380px]">
-              <div className="absolute inset-0 rounded-full border border-blue-500/20 animate-[spin_12s_linear_infinite]" />
-              <div className="absolute inset-3 rounded-full border border-purple-500/20 animate-[spin_18s_linear_infinite_reverse]" />
-              <div className="absolute inset-6 rounded-full border border-cyan-500/10 animate-[spin_25s_linear_infinite]" />
+              <div className="absolute inset-0 rounded-full border border-blue-500/20 animate-[spin_12s_linear_infinite]">
+                <div className="absolute top-0 left-1/2 w-3 h-3 rounded-full -translate-x-1/2 -translate-y-1/2" style={{ backgroundColor: "var(--color-accent-blue)", boxShadow: "0 0 15px var(--color-accent-blue)" }} />
+                <div className="absolute bottom-0 left-1/2 w-2 h-2 rounded-full -translate-x-1/2 translate-y-1/2" style={{ backgroundColor: "var(--color-accent-cyan)", boxShadow: "0 0 15px var(--color-accent-cyan)" }} />
+              </div>
+              <div className="absolute inset-3 rounded-full border border-purple-500/20 animate-[spin_18s_linear_infinite_reverse]">
+                <div className="absolute top-1/2 right-0 w-3 h-3 rounded-full translate-x-1/2 -translate-y-1/2" style={{ backgroundColor: "var(--color-accent-purple)", boxShadow: "0 0 15px var(--color-accent-purple)" }} />
+              </div>
+              <div className="absolute inset-6 rounded-full border border-cyan-500/10 animate-[spin_25s_linear_infinite]">
+                <div className="absolute top-1/2 left-0 w-2 h-2 rounded-full -translate-x-1/2 -translate-y-1/2" style={{ backgroundColor: "var(--color-accent-blue)", boxShadow: "0 0 15px var(--color-accent-blue)" }} />
+              </div>
               <div className="absolute inset-10 rounded-full overflow-hidden" style={{ border: "1px solid var(--border)" }}>
                 <Image src="/image/shovon.jpeg" alt="Imran Shovon" fill className="object-cover object-top" priority />
               </div>
-              {/* Decorative dots */}
-              <div className="absolute top-4 right-4 w-3 h-3 rounded-full" style={{ backgroundColor: "var(--color-accent-blue)" }} />
-              <div className="absolute bottom-6 left-6 w-2 h-2 rounded-full" style={{ backgroundColor: "var(--color-accent-cyan)" }} />
-              <div className="absolute bottom-12 right-8 w-2 h-2 rounded-full" style={{ backgroundColor: "var(--color-accent-purple)" }} />
             </div>
           </div>
         </div>

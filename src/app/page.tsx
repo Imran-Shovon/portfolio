@@ -8,20 +8,26 @@ import { Education } from "@/components/Education";
 import { Research } from "@/components/Research";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
+import { PageLoader } from "@/components/PageLoader";
+import { BackToTop } from "@/components/BackToTop";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen" style={{ backgroundColor: "var(--color-base)" }}>
-      <Navbar />
-      <Hero />
-      <About />
-      <Skills />
-      <Experience />
-      <Projects />
-      <Education />
-      <Research />
-      <Contact />
-      <Footer />
-    </main>
+    <>
+      <PageLoader />
+      <BackToTop />
+      <main className="relative min-h-screen" style={{ backgroundColor: "var(--color-base)" }}>
+        <Navbar />
+        <Hero />
+        <About />
+        <Skills />
+        <Experience />
+        <Projects />
+        <Education />
+        <Research />
+        <Contact />
+        <Footer />
+      </main>
+    </>
   );
 }

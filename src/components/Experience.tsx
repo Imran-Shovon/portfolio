@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Briefcase, Calendar } from "lucide-react";
+import { TextReveal } from "@/components/ScrollReveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -87,13 +88,13 @@ export function Experience() {
 
       <div className="relative z-10 max-w-5xl mx-auto px-6">
         {/* Heading */}
-        <div className="flex flex-col items-center mb-16">
+        <TextReveal className="flex flex-col items-center mb-16">
           <span className="text-sm font-semibold tracking-widest uppercase mb-3" style={{ color: "var(--color-accent-cyan)" }}>Career Path</span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 text-center" style={{ fontFamily: "var(--font-sora)" }}>
             Work <span style={{ background: "linear-gradient(90deg, var(--color-accent-purple), var(--color-accent-cyan))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Experience</span>
           </h2>
           <div className="w-16 h-1 rounded-full" style={{ background: "linear-gradient(90deg, var(--color-accent-purple), var(--color-accent-cyan))" }} />
-        </div>
+        </TextReveal>
 
         {/* Timeline — vertical left-aligned */}
         <div className="relative pl-8 md:pl-12">

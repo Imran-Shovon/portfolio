@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Send, Mail, MapPin, Phone } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
+import { TextReveal } from "@/components/ScrollReveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -50,13 +51,13 @@ export function Contact() {
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6">
-        <div className="flex flex-col items-center mb-16">
+        <TextReveal className="flex flex-col items-center mb-16">
           <span className="text-sm font-semibold tracking-widest uppercase mb-3" style={{ color: "var(--color-accent-blue)" }}>Get In Touch</span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 text-center" style={{ fontFamily: "var(--font-sora)" }}>
             Let&apos;s <span style={{ background: "linear-gradient(90deg, var(--color-accent-blue), var(--color-accent-purple))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Connect</span>
           </h2>
           <div className="w-16 h-1 rounded-full" style={{ background: "linear-gradient(90deg, var(--color-accent-blue), var(--color-accent-purple))" }} />
-        </div>
+        </TextReveal>
 
         <div className="grid lg:grid-cols-5 gap-10">
           {/* Info */}

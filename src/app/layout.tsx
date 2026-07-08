@@ -29,7 +29,7 @@ export default function RootLayout({
       data-theme="dark"
       className={`${inter.variable} ${sora.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col overflow-x-hidden">
+      <body suppressHydrationWarning className="min-h-full flex flex-col overflow-x-hidden">
         <ThemeProvider>
           {children}
         </ThemeProvider>

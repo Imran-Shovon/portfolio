@@ -134,7 +134,14 @@ export function Hero() {
                 <div className="absolute top-1/2 left-0 w-2 h-2 rounded-full -translate-x-1/2 -translate-y-1/2" style={{ backgroundColor: "var(--color-accent-blue)", boxShadow: "0 0 15px var(--color-accent-blue)" }} />
               </div>
               <div className="absolute inset-10 rounded-full overflow-hidden" style={{ border: "1px solid var(--border)" }}>
-                <Image src="/image/shovon.jpeg" alt="Imran Shovon" fill className="object-cover object-top" priority />
+                <Image
+                  src="/image/shovon.jpeg"
+                  alt="Imran Shovon"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 380px"
+                  className="object-cover object-top"
+                  priority
+                />
               </div>
             </div>
           </div>

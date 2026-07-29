@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Code, Database, Cpu, Globe, BookOpen } from "lucide-react";
+import { Code, Database, Cpu, BookOpen } from "lucide-react";
 import { TextReveal } from "@/components/ScrollReveal";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -62,6 +62,12 @@ const techBadges = [
   "Data Analysis", "Machine Learning", "Research Writing", "VS Code",
 ];
 
+function TechBadge({ tech }: { tech: string }) {
+  return (
+    <span className="tech-carousel-item">{tech}</span>
+  );
+}
+
 export function Skills() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
@@ -95,8 +101,24 @@ export function Skills() {
           <div className="w-16 h-1 rounded-full" style={{ background: "linear-gradient(90deg, var(--color-accent-blue), var(--color-accent-cyan))" }} />
         </TextReveal>
 
+        {/* Tech Carousel */}
+        <div className="tech-carousel mb-14">
+          <div className="tech-carousel-track">
+            {[...techBadges, ...techBadges].map((tech, index) => (
+              <div
+                key={`${tech}-${index}`}
+                className="tech-carousel-unit"
+                aria-hidden={index >= techBadges.length}
+              >
+                <TechBadge tech={tech} />
+                <span className="tech-carousel-dot" />
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Skill Cards */}
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {skillCategories.map(({ title, icon: Icon, color, skills }) => (
             <div
               key={title}
@@ -132,29 +154,6 @@ export function Skills() {
                 ))}
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* Tech Cloud */}
-        <div className="flex flex-wrap gap-3 justify-center">
-          {techBadges.map(tech => (
-            <span
-              key={tech}
-              className="px-4 py-2 text-sm rounded-full text-gray-300 transition-all duration-300 cursor-default"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
-              onMouseEnter={e => {
-                (e.currentTarget.style.color) = "white";
-                (e.currentTarget.style.borderColor) = "var(--color-accent-blue)";
-                (e.currentTarget.style.background) = "rgba(59,130,246,0.1)";
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget.style.color) = "";
-                (e.currentTarget.style.borderColor) = "rgba(255,255,255,0.08)";
-                (e.currentTarget.style.background) = "rgba(255,255,255,0.04)";
-              }}
-            >
-              {tech}
-            </span>
           ))}
         </div>
       </div>

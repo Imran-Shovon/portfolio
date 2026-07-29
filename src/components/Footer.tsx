@@ -1,7 +1,7 @@
 "use client";
 
-import { ChevronRight, Mail } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
+import { ChevronRight, Mail } from "lucide-react";
 
 const quickLinks = [
   { name: "Home", href: "#home" },
@@ -19,30 +19,66 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative pt-16 pb-8" style={{ backgroundColor: "var(--color-surface)", borderTop: "1px solid var(--border)" }}>
+    <footer
+      className="relative pt-16 pb-8"
+      style={{
+        backgroundColor: "var(--color-surface)",
+        borderTop: "1px solid var(--border)",
+      }}
+    >
       <div className="max-w-5xl mx-auto px-6">
         <div className="grid md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div>
-            <div className="text-2xl font-bold mb-4" style={{ fontFamily: "var(--font-sora)" }}>
+            <div
+              className="text-2xl font-bold mb-4"
+              style={{ fontFamily: "var(--font-sora)" }}
+            >
               <span style={{ color: "var(--color-accent-blue)" }}>S</span>
               <span style={{ color: "var(--color-text)" }}>hovon</span>
               <span style={{ color: "var(--color-accent-cyan)" }}>.</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed mb-5">
-              Frontend Developer & Research Enthusiast. Building premium digital experiences with passion and precision.
+              Frontend Developer & Research Enthusiast. Building premium digital
+              experiences with passion and precision.
             </p>
             <div className="flex gap-3">
               {[
-                { icon: <GithubIcon size={18} />, href: "#", label: "GitHub" },
-                { icon: <LinkedinIcon size={18} />, href: "#", label: "LinkedIn" },
-                { icon: <Mail size={18} />, href: "mailto:shovonbiswas.cse@gmail.com", label: "Email" },
+                {
+                  icon: <GithubIcon size={18} />,
+                  href: "https://github.com/Imran-Shovon",
+                  label: "GitHub",
+                },
+                {
+                  icon: <LinkedinIcon size={18} />,
+                  href: "https://www.linkedin.com/in/shovon-biswas/",
+                  label: "LinkedIn",
+                },
+                {
+                  icon: <Mail size={18} />,
+                  href: "mailto:shovonbiswas.cse@gmail.com",
+                  label: "Email",
+                },
               ].map(({ icon, href, label }) => (
-                <a key={label} href={href} aria-label={label}
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  aria-label={label}
                   className="p-2.5 rounded-xl text-gray-600 transition-all duration-300"
-                  style={{ background: "var(--tag-bg)", border: "1px solid var(--border)" }}
-                  onMouseEnter={e => { (e.currentTarget.style.color) = "var(--color-text)"; (e.currentTarget.style.borderColor) = "var(--color-accent-blue)"; }}
-                  onMouseLeave={e => { (e.currentTarget.style.color) = ""; (e.currentTarget.style.borderColor) = "var(--border)"; }}
+                  style={{
+                    background: "var(--tag-bg)",
+                    border: "1px solid var(--border)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "var(--color-text)";
+                    e.currentTarget.style.borderColor =
+                      "var(--color-accent-blue)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "";
+                    e.currentTarget.style.borderColor = "var(--border)";
+                  }}
                 >
                   {icon}
                 </a>
@@ -52,17 +88,24 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-sm font-semibold text-white uppercase tracking-widest mb-5">Quick Links</h4>
+            <h4 className="text-sm font-semibold text-white uppercase tracking-widest mb-5">
+              Quick Links
+            </h4>
             <div className="grid grid-cols-2 gap-2">
-              {quickLinks.map(link => (
+              {quickLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
                   className="flex items-center gap-1 text-sm text-gray-500 transition-colors duration-200 group"
-                  onMouseEnter={e => (e.currentTarget.style.color = "var(--color-text)")}
-                  onMouseLeave={e => (e.currentTarget.style.color = "")}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = "var(--color-text)")
+                  }
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "")}
                 >
-                  <ChevronRight size={12} className="text-blue-500 group-hover:translate-x-0.5 transition-transform" />
+                  <ChevronRight
+                    size={12}
+                    className="text-blue-500 group-hover:translate-x-0.5 transition-transform"
+                  />
                   {link.name}
                 </a>
               ))}
@@ -71,9 +114,23 @@ export function Footer() {
 
           {/* Contact Snippet */}
           <div>
-            <h4 className="text-sm font-semibold text-white uppercase tracking-widest mb-5">Contact</h4>
+            <h4 className="text-sm font-semibold text-white uppercase tracking-widest mb-5">
+              Contact
+            </h4>
             <div className="flex flex-col gap-3 text-sm text-gray-500">
-              <div>📧 <a href="mailto:shovonbiswas.cse@gmail.com" className="transition-colors" onMouseEnter={e => (e.currentTarget.style.color = "var(--color-text)")} onMouseLeave={e => (e.currentTarget.style.color = "")}>shovonbiswas.cse@gmail.com</a></div>
+              <div>
+                📧{" "}
+                <a
+                  href="mailto:shovonbiswas.cse@gmail.com"
+                  className="transition-colors"
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = "var(--color-text)")
+                  }
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+                >
+                  shovonbiswas.cse@gmail.com
+                </a>
+              </div>
               <div>📍 Dhaka, Bangladesh</div>
               <div>🕒 Available for freelance & full-time</div>
             </div>
@@ -81,21 +138,36 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6" style={{ borderTop: "1px solid var(--border)" }}>
+        <div
+          className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6"
+          style={{ borderTop: "1px solid var(--border)" }}
+        >
           <p className="text-xs text-gray-600">
-            © {year} Md Shovon Biswas. All rights reserved. Built with Next.js & GSAP.
+            © {year} Md Shovon Biswas. All rights reserved. Built with Next.js &
+            GSAP.
           </p>
 
           {/* Back to top */}
           <button
             onClick={scrollToTop}
             className="group flex items-center gap-2 text-xs text-gray-600 transition-all duration-300 px-4 py-2 rounded-full"
-            style={{ background: "var(--tag-bg)", border: "1px solid var(--border)" }}
-            onMouseEnter={e => { (e.currentTarget.style.borderColor = "var(--color-accent-blue)"); (e.currentTarget.style.color = "var(--color-text)"); }}
-            onMouseLeave={e => { (e.currentTarget.style.borderColor = "var(--border)"); (e.currentTarget.style.color = ""); }}
+            style={{
+              background: "var(--tag-bg)",
+              border: "1px solid var(--border)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "var(--color-accent-blue)";
+              e.currentTarget.style.color = "var(--color-text)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "var(--border)";
+              e.currentTarget.style.color = "";
+            }}
           >
             Back to Top
-            <span className="group-hover:-translate-y-0.5 transition-transform inline-block">↑</span>
+            <span className="group-hover:-translate-y-0.5 transition-transform inline-block">
+              ↑
+            </span>
           </button>
         </div>
       </div>

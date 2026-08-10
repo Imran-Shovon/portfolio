@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { BookOpen, Clock, ExternalLink, FileText, UserRound } from "lucide-react";
+import { BookOpen, Clock, ExternalLink, FileText, UserRound, X } from "lucide-react";
 import { TextReveal } from "@/components/ScrollReveal";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -44,9 +44,12 @@ const papers = [
   },
 ];
 
+type Paper = (typeof papers)[number];
+
 export function Research() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const [selectedPaper, setSelectedPaper] = useState<Paper | null>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -61,6 +64,22 @@ export function Research() {
     }, sectionRef);
     return () => ctx.revert();
   }, []);
+
+  useEffect(() => {
+    if (!selectedPaper) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedPaper(null);
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [selectedPaper]);
 
   return (
     <section id="research" ref={sectionRef} className="py-24 relative" style={{ backgroundColor: "var(--color-surface)" }}>
@@ -81,9 +100,25 @@ export function Research() {
           {papers.map((paper) => (
             <article
               key={paper.title}
-              className="group relative overflow-hidden rounded-2xl transition-all duration-300 glass-card"
-              onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(6,182,212,0.25)")}
-              onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
+              tabIndex={0}
+              role="button"
+              aria-label={`Open publication details for ${paper.title}`}
+              className="group relative overflow-hidden rounded-2xl transition-all duration-300 glass-card cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-400/60"
+              onClick={() => setSelectedPaper(paper)}
+              onKeyDown={event => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  setSelectedPaper(paper);
+                }
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = "rgba(6,182,212,0.25)";
+                e.currentTarget.style.transform = "translateY(-6px)";
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = "var(--border)";
+                e.currentTarget.style.transform = "";
+              }}
             >
               <div className="relative h-48 overflow-hidden" style={{ backgroundColor: "var(--card-solid)" }}>
                 <Image
@@ -101,20 +136,7 @@ export function Research() {
               </div>
 
               <div className="p-6">
-                <h3 className="text-lg font-semibold text-white mb-4 leading-snug" style={{ fontFamily: "var(--font-sora)" }}>
-                  {paper.title}
-                </h3>
-
-                <div className="mb-5">
-                  <div className="flex items-center gap-2 text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">
-                    <FileText size={12} /> Description
-                  </div>
-                  <p className="text-sm text-gray-400 leading-relaxed">
-                    {paper.description}
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-2 mb-4">
                   {paper.tags.map(tag => (
                     <span key={tag} className="inline-flex items-center gap-2 px-2 py-1 text-xs rounded-md text-gray-400"
                       style={{ backgroundColor: "rgba(6,182,212,0.08)", border: "1px solid rgba(6,182,212,0.15)", color: "rgba(6,182,212,0.9)" }}
@@ -125,25 +147,106 @@ export function Research() {
                   ))}
                 </div>
 
-                <div className="flex flex-wrap gap-3">
-                  <a href={paper.paper} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm text-white font-medium transition-all"
-                    style={{ backgroundColor: "var(--color-accent-cyan)" }}
-                  >
-                    <ExternalLink size={14} /> See Live
-                  </a>
-                  <a href={paper.profile} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all"
-                    style={{ backgroundColor: "var(--overlay-bg)", border: "1px solid var(--border-hover)", color: "var(--color-text)" }}
-                  >
-                    <UserRound size={14} /> See Profile
-                  </a>
+                <h3 className="text-lg font-semibold text-white mb-4 leading-snug" style={{ fontFamily: "var(--font-sora)" }}>
+                  {paper.title}
+                </h3>
+
+                <div className="mb-5">
+                  <div className="flex items-center gap-2 text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">
+                    <FileText size={12} /> Abstract
+                  </div>
+                  <p className="text-sm text-gray-400 leading-relaxed overflow-hidden [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical]">
+                    {paper.description}
+                  </p>
                 </div>
               </div>
             </article>
           ))}
         </div>
       </div>
+
+      {selectedPaper && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center px-4 py-8"
+          style={{ backgroundColor: "rgba(3,7,18,0.78)", backdropFilter: "blur(10px)" }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="research-modal-title"
+          onClick={() => setSelectedPaper(null)}
+        >
+          <div
+            className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl glass-card"
+            style={{ backgroundColor: "var(--card-solid)" }}
+            onClick={event => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              aria-label="Close publication details"
+              className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full transition-all"
+              style={{ backgroundColor: "var(--overlay-bg)", border: "1px solid var(--border-hover)", color: "var(--color-text)" }}
+              onClick={() => setSelectedPaper(null)}
+            >
+              <X size={18} />
+            </button>
+
+            <div className="relative h-64 overflow-hidden rounded-t-2xl">
+              <Image
+                src={selectedPaper.image}
+                alt={selectedPaper.title}
+                fill
+                sizes="(min-width: 768px) 768px, 100vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(10,14,26,0.1), rgba(10,14,26,0.78))" }} />
+              <div className="absolute bottom-5 left-6 right-16 flex items-center gap-2 text-sm font-medium text-white">
+                <Clock size={15} style={{ color: "var(--color-accent-cyan)" }} />
+                <span>{selectedPaper.duration}</span>
+              </div>
+            </div>
+
+            <div className="p-6 md:p-8">
+              <div className="flex flex-wrap gap-2 mb-5">
+                {selectedPaper.tags.map(tag => (
+                  <span key={tag} className="inline-flex items-center gap-2 px-2 py-1 text-xs rounded-md"
+                    style={{ backgroundColor: "rgba(6,182,212,0.08)", border: "1px solid rgba(6,182,212,0.15)", color: "rgba(6,182,212,0.9)" }}
+                  >
+                    <BookOpen size={12} />
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <h3 id="research-modal-title" className="text-2xl font-semibold text-white mb-5 leading-snug" style={{ fontFamily: "var(--font-sora)" }}>
+                {selectedPaper.title}
+              </h3>
+
+              <div className="mb-7">
+                <div className="flex items-center gap-2 text-xs text-gray-500 uppercase tracking-wider font-semibold mb-2">
+                  <FileText size={12} /> Abstract
+                </div>
+                <p className="text-sm md:text-base text-gray-400 leading-relaxed">
+                  {selectedPaper.description}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <a href={selectedPaper.paper} target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm text-white font-medium transition-all"
+                  style={{ backgroundColor: "var(--color-accent-cyan)" }}
+                >
+                  <ExternalLink size={14} /> See Live
+                </a>
+                <a href={selectedPaper.profile} target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all"
+                  style={{ backgroundColor: "var(--overlay-bg)", border: "1px solid var(--border-hover)", color: "var(--color-text)" }}
+                >
+                  <UserRound size={14} /> See Profile
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

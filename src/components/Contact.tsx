@@ -1,15 +1,19 @@
 "use client";
 
-import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { TextReveal } from "@/components/ScrollReveal";
+import { SOCIAL_COLORS, SocialIcon } from "@/components/SocialIcon";
+import type { Profile } from "@/lib/content-types";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { Loader2, Mail, MapPin, Phone, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function Contact() {
+type Status = { state: "idle" | "sending" | "sent" } | { state: "error"; message: string };
+
+/** `endpoint` is the content API's contact URL for this site; messages show up in the admin dashboard. */
+export function Contact({ profile, endpoint }: { profile: Profile; endpoint: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
@@ -19,8 +23,10 @@ export function Contact() {
     email: "",
     subject: "",
     message: "",
+    // Honeypot: hidden from people, often filled by bots. The API silently drops those.
+    website: "",
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<Status>({ state: "idle" });
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -54,12 +60,38 @@ export function Contact() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    // Reset after 4 seconds for demo
-    setTimeout(() => setSubmitted(false), 4000);
+    setStatus({ state: "sending" });
+    try {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        const detail = body?.error?.details?.[0]?.message;
+        throw new Error(
+          res.status === 429
+            ? "You've sent several messages already. Please try again later."
+            : detail ?? body?.error?.message ?? "Something went wrong. Please try again.",
+        );
+      }
+      setFormData({ name: "", email: "", subject: "", message: "", website: "" });
+      setStatus({ state: "sent" });
+      setTimeout(() => setStatus({ state: "idle" }), 6000);
+    } catch (err) {
+      const message = err instanceof TypeError ? "Couldn't reach the server. Please try again later." : (err as Error).message;
+      setStatus({ state: "error", message });
+    }
   };
+
+  const contactItems = [
+    { icon: Mail, label: "Email", value: profile.contact.email, color: "var(--color-accent-blue)" },
+    { icon: Phone, label: "Phone", value: profile.contact.phone, color: "var(--color-accent-purple)" },
+    { icon: MapPin, label: "Location", value: profile.contact.location, color: "var(--color-accent-cyan)" },
+  ].filter(item => item.value);
 
   const inputClass =
     "w-full rounded-xl px-4 py-3 text-sm outline-none transition-all duration-300 text-text placeholder-gray-500";
@@ -123,36 +155,15 @@ export function Contact() {
                 className="text-2xl font-bold text-white mb-3"
                 style={{ fontFamily: "var(--font-sora)" }}
               >
-                Have a project in mind?
+                {profile.contact.heading}
               </h3>
               <p className="text-gray-400 leading-relaxed">
-                I&apos;m always open to discussing new opportunities,
-                interesting projects, or research collaborations. Let&apos;s
-                build something amazing together.
+                {profile.contact.blurb}
               </p>
             </div>
 
             <div className="flex flex-col gap-4">
-              {[
-                {
-                  icon: Mail,
-                  label: "Email",
-                  value: "shovonbiswas.cse@gmail.com",
-                  color: "var(--color-accent-blue)",
-                },
-                {
-                  icon: Phone,
-                  label: "Phone",
-                  value: "+880 1776752696",
-                  color: "var(--color-accent-purple)",
-                },
-                {
-                  icon: MapPin,
-                  label: "Location",
-                  value: "Dhaka, Bangladesh",
-                  color: "var(--color-accent-cyan)",
-                },
-              ].map(({ icon: Icon, label, value, color }) => (
+              {contactItems.map(({ icon: Icon, label, value, color }) => (
                 <div
                   key={label}
                   className="flex items-center gap-4 p-4 rounded-xl transition-all duration-300"
@@ -185,30 +196,14 @@ export function Contact() {
 
             {/* Social links */}
             <div className="flex gap-4">
-              {[
-                {
-                  icon: <GithubIcon size={20} />,
-                  href: "https://github.com/Imran-Shovon",
-                  label: "GitHub",
-                  color: "white",
-                },
-                {
-                  icon: <LinkedinIcon size={20} />,
-                  href: "https://www.linkedin.com/in/shovon-biswas/",
-                  label: "LinkedIn",
-                  color: "var(--color-accent-blue)",
-                },
-                {
-                  icon: <Mail size={20} />,
-                  href: "mailto:shovonbiswas.cse@gmail.com",
-                  label: "Email",
-                  color: "var(--color-accent-purple)",
-                },
-              ].map(({ icon, href, label, color }) => (
+              {profile.socials.map(({ platform, url, label }) => {
+                const color = SOCIAL_COLORS[platform];
+                return (
                 <a
-                  key={label}
-                  href={href}
+                  key={`${platform}-${url}`}
+                  href={url}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="p-3 rounded-xl text-gray-500 transition-all duration-300"
                   style={{
                     background: "var(--tag-bg)",
@@ -224,15 +219,16 @@ export function Contact() {
                   }}
                   aria-label={label}
                 >
-                  {icon}
+                  <SocialIcon platform={platform} size={20} />
                 </a>
-              ))}
+                );
+              })}
             </div>
           </div>
 
           <div ref={formRef} className="lg:col-span-3">
             <div className="p-8 rounded-2xl glass-card">
-              {submitted ? (
+              {status.state === "sent" ? (
                 <div className="flex flex-col items-center justify-center h-64 text-center">
                   <div className="text-5xl mb-4">✅</div>
                   <h3 className="text-xl font-semibold text-white mb-2">
@@ -244,6 +240,16 @@ export function Contact() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                  <input
+                    type="text"
+                    name="website"
+                    value={formData.website}
+                    onChange={handleChange}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                  />
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs text-gray-500 uppercase tracking-wide mb-1.5">
@@ -341,9 +347,16 @@ export function Contact() {
                     />
                   </div>
 
+                  {status.state === "error" && (
+                    <p role="alert" className="text-sm rounded-xl px-4 py-3" style={{ color: "#F43F5E", background: "#F43F5E15", border: "1px solid #F43F5E30" }}>
+                      {status.message}
+                    </p>
+                  )}
+
                   <button
                     type="submit"
-                    className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-white transition-all duration-300 group"
+                    disabled={status.state === "sending"}
+                    className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-white transition-all duration-300 group disabled:opacity-70 disabled:cursor-wait"
                     style={{
                       background:
                         "linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-purple))",
@@ -358,11 +371,15 @@ export function Contact() {
                         "0 0 30px rgba(59,130,246,0.25)")
                     }
                   >
-                    Send Message
-                    <Send
-                      size={18}
-                      className="group-hover:translate-x-1 transition-transform"
-                    />
+                    {status.state === "sending" ? "Sending…" : "Send Message"}
+                    {status.state === "sending" ? (
+                      <Loader2 size={18} className="animate-spin" />
+                    ) : (
+                      <Send
+                        size={18}
+                        className="group-hover:translate-x-1 transition-transform"
+                      />
+                    )}
                   </button>
                 </form>
               )}

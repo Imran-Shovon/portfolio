@@ -5,44 +5,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { GraduationCap, Calendar, BookOpen } from "lucide-react";
 import { TextReveal } from "@/components/ScrollReveal";
+import type { Education as EducationEntry } from "@/lib/content-types";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const educationData = [
-  {
-    degree: "Bachelor of Science (B.Sc.) in Computer Science & Engineering",
-    university: "Bangladesh University of Business and Technology (BUBT), Dhaka",
-    duration: "2018 – 2022",
-    status: "Completed 2022",
-    grade: "3.74 / 4.00",
-    gradeLabel: "CGPA",
-    description:
-      "I completed my Bachelor's degree in Computer Science and Engineering at BUBT – Bangladesh University of Business and Technology, Dhaka.",
-    accent: "#3b82f6",
-  },
-  {
-    degree: "Higher Secondary Certificate (HSC), Science",
-    university: "Chuadanga Government College, Chuadanga",
-    duration: "2014 – 2016",
-    status: "Completed 2016",
-    grade: "4.42 / 5.00",
-    gradeLabel: "GPA",
-    description:
-      "I completed my class 12 higher secondary education at Chuadanga Government College, Chuadanga, where I studied Science.",
-    accent: "#8b5cf6",
-  },
-  {
-    degree: "Secondary School Certificate (SSC), Science",
-    university: "Victoria Jubilee High School, Chuadanga",
-    grade: "5.00 / 5.00",
-    gradeLabel: "GPA",
-    description:
-      "I completed my class 10 secondary education at Victoria Jubilee High School, Chuadanga, where I studied Science.",
-    accent: "#06b6d4",
-  },
-];
-
-export function Education() {
+export function Education({ education }: { education: EducationEntry[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
@@ -58,7 +25,7 @@ export function Education() {
       );
     }, sectionRef);
     return () => ctx.revert();
-  }, []);
+  }, [education]);
 
   return (
     <section id="education" ref={sectionRef} className="py-24 relative" style={{ backgroundColor: "var(--color-base)" }}>
@@ -76,9 +43,9 @@ export function Education() {
         </TextReveal>
 
         <div ref={cardsRef} className="flex flex-col gap-8">
-          {educationData.map((edu) => (
+          {education.map((edu) => (
             <div
-              key={edu.degree}
+              key={edu.id}
               className="relative p-8 rounded-2xl transition-all duration-300 glass-card"
               onMouseEnter={e => (e.currentTarget.style.borderColor = `${edu.accent}40`)}
               onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
@@ -94,7 +61,7 @@ export function Education() {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-white mb-1" style={{ fontFamily: "var(--font-sora)" }}>{edu.degree}</h3>
-                      <p className="font-medium" style={{ color: edu.accent }}>{edu.university}</p>
+                      <p className="font-medium" style={{ color: edu.accent }}>{edu.institution}</p>
                     </div>
                   </div>
 

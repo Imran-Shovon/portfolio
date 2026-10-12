@@ -5,63 +5,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Calendar, ChevronRight } from "lucide-react";
 import { Fragment, useEffect, useRef } from "react";
+import type { Experience as Exp } from "@/lib/content-types";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const experiences = [
-  {
-    role: "Frontend Developer",
-    company: "Redlime Solutions",
-    duration: "November 2025 – Present",
-    type: "Full-time",
-    accent: "#3b82f6",
-    responsibilities: [
-      "Built and maintained responsive web applications using React and Next.js",
-      "Led UI/UX redesign initiatives resulting in 40% improved user engagement",
-      "Collaborated with backend teams to integrate RESTful APIs",
-      "Implemented GSAP animations and interactive user experiences",
-    ],
-    tech: [
-      "React",
-      "Next.js",
-      "Angular",
-      "TypeScript",
-      "JavaScript",
-      "Astro",
-      "Bootstrap",
-      "Tailwind CSS",
-      "Animation",
-    ],
-  },
-  {
-    role: "Junior Web Developer",
-    company: "Gigatech Limited",
-    duration: "February 2023 – November 2025",
-    type: "Full-time",
-    accent: "#8b5cf6",
-    responsibilities: [
-      "Developed responsive landing pages and marketing websites for clients",
-      "Worked with design teams to translate Figma mockups into pixel-perfect code",
-      "Optimized website performance and improved load times by 30%",
-    ],
-    tech: ["HTML", "CSS", "JavaScript", "Bootstrap", "Angular", "React"],
-  },
-  {
-    role: "Web Development Intern",
-    company: "Gigatech Limited",
-    duration: "November 2022 – January 2023",
-    type: "Internship",
-    accent: "#06b6d4",
-    responsibilities: [
-      "Assisted in building internal dashboard interfaces using React",
-      "Gained hands-on experience with Git workflows and agile development",
-      "Created reusable component libraries for the front-end team",
-    ],
-    tech: ["Python", "Django", "JavaScript"],
-  },
-];
-
-type Exp = (typeof experiences)[number];
 
 const initials = (name: string) =>
   name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
@@ -118,7 +64,7 @@ function PeriodMeta({ exp, current }: { exp: Exp; current: boolean }) {
   );
 }
 
-export function Experience() {
+export function Experience({ experiences }: { experiences: Exp[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
@@ -144,7 +90,7 @@ export function Experience() {
       });
     }, sectionRef);
     return () => ctx.revert();
-  }, []);
+  }, [experiences]);
 
   return (
     <section
@@ -216,7 +162,7 @@ export function Experience() {
             {experiences.map(exp => {
               const current = exp.duration.endsWith("Present");
               return (
-                <div key={`${exp.company}-${exp.role}`} className="exp-item relative grid md:grid-cols-[230px_1fr] gap-4 md:gap-10 pl-10 md:pl-0">
+                <div key={exp.id} className="exp-item relative grid md:grid-cols-[230px_1fr] gap-4 md:gap-10 pl-10 md:pl-0">
                   {/* Node on the line */}
                   <div className="exp-node absolute left-0 md:left-[238px] top-1.5 w-6 h-6 rounded-full flex items-center justify-center z-10"
                     style={{ backgroundColor: "var(--color-base)", border: `2px solid ${exp.accent}`, boxShadow: `0 0 0 4px ${exp.accent}15, 0 0 18px ${exp.accent}60` }}

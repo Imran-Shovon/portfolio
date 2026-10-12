@@ -1,9 +1,11 @@
 "use client";
 
+import { BrandName } from "@/components/BrandName";
+
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
-export function PageLoader() {
+export function PageLoader({ brand, tagline }: { brand: string; tagline: string }) {
   const loaderRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
@@ -69,9 +71,7 @@ export function PageLoader() {
           className="text-[clamp(2.5rem,8vw,5.5rem)] font-bold tracking-tight select-none"
           style={{ fontFamily: "var(--font-sora)" }}
         >
-          <span style={{ color: "var(--color-accent-blue)" }}>S</span>
-          <span style={{ color: "var(--color-text)" }}>hovon</span>
-          <span style={{ color: "var(--color-accent-cyan)" }}>.</span>
+          <BrandName name={brand} />
         </div>
 
         {/* Tagline */}
@@ -79,7 +79,7 @@ export function PageLoader() {
           className="text-xs tracking-[0.3em] uppercase"
           style={{ color: "var(--text-muted)" }}
         >
-          Frontend Developer
+          {tagline}
         </p>
       </div>
     </div>

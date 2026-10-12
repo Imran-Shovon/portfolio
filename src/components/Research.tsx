@@ -6,61 +6,20 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight, BookOpen, Calendar, FileText, UserRound, X } from "lucide-react";
 import { TextReveal } from "@/components/ScrollReveal";
+import type { Publication as Paper } from "@/lib/content-types";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const RESEARCH_GATE_PROFILE_LINK = "https://www.researchgate.net/profile/Md-Biswas-16?ev=hdr_xprf";
-const MANGO_DISEASE_PAPER_LINK = "https://www.researchgate.net/profile/Md-Rahman-40/publication/370418634_A_Deep_Learning_Based_Smartphone_Application_for_Detecting_Mango_Diseases_and_Pesticide_Suggestions/links/644f5d6b809a5350213ef10e/A-Deep-Learning-Based-Smartphone-Application-for-Detecting-Mango-Diseases-and-Pesticide-Suggestions.pdf";
-const SUICIDE_PAPER_LINK = "https://books.google.com.bd/books?hl=en&lr=&id=CNN-EAAAQBAJ&oi=fnd&pg=PA279&dq=Identifying+the+Signature+of+Suicidality+:+A+Machine+Learning+Approach&ots=WQc7RMFMrk&sig=q1dkRQ0mitLeh-5-isKLM0HVvsc&redir_esc=y#v=onepage&q=Identifying%20the%20Signature%20of%20Suicidality%20%3A%20A%20Machine%20Learning%20Approach&f=false";
-const LANE_DETECTION_PAPER_LINK = "https://ieeexplore.ieee.org/abstract/document/9689883";
+const yearOf = (date: string) => Number(date.split(" ").pop());
 
-const papers = [
-  {
-    title: "A Deep Learning Based Smartphone Application for Detecting Mango Diseases and Pesticide Suggestions",
-    duration: "May 2023",
-    image: "/image/paper/Mango_Disease_Detection.png",
-    description: "This paper has proposed a new machine learning to classify diseases, insects, and their solutions. It includes a sufficient number of mango tree plants, insects, and diseases datasets with pesticide suggestions.",
-    publisher: "IJCDS",
-    publisherFull: "International Journal of Computing and Digital Systems",
-    keywords: ["Deep Learning", "Mobile App", "Agriculture"],
-    accent: "#10B981",
-    profile: RESEARCH_GATE_PROFILE_LINK,
-    paper: MANGO_DISEASE_PAPER_LINK,
-  },
-  {
-    title: "Identifying the Signature of Suicidality : A Machine Learning Approach",
-    duration: "June 2022",
-    image: "/image/paper/Suicide.png",
-    description: "This research proposes a machine learning-based prediction model in this respect. This research uses four traditional machine learning techniques to look at suicidality in various groups of people. To achieve higher levels of accuracy, we have included feature engineering in our suggested model.",
-    publisher: "EUDL",
-    publisherFull: "European Union Digital Library",
-    keywords: ["Machine Learning", "Feature Engineering", "Mental Health"],
-    accent: "#8b5cf6",
-    profile: RESEARCH_GATE_PROFILE_LINK,
-    paper: SUICIDE_PAPER_LINK,
-  },
-  {
-    title: "Lane Detection for Autonomous Vehicle Management: PHT Approach",
-    duration: "December 2021",
-    image: "/image/paper/Lane_Detection.png",
-    description: "This research paper presents the design of a prototype autonomous guided vehicle which will detect and follow the lanes using the Probabilistic Hough Transform (PHT) algorithm. To do so, we convert our RGB road images into an HSV color model and then apply Gaussian smoothing to the converted grayscale image. For detection purposes, we process our region of interest (ROI) using a polygon clipping algorithm. Then, we apply Probabilistic Hough Transform upon the ROI image while setting all the parameters in our proposed lane detection algorithm.",
-    publisher: "IEEE",
-    publisherFull: "IEEE Xplore",
-    keywords: ["Computer Vision", "Hough Transform", "Autonomous Vehicles"],
-    accent: "#3b82f6",
-    profile: RESEARCH_GATE_PROFILE_LINK,
-    paper: LANE_DETECTION_PAPER_LINK,
-  },
-];
-
-type Paper = (typeof papers)[number];
-
-const years = papers.map(p => Number(p.duration.split(" ").pop()));
-const stats = [
-  { value: String(papers.length).padStart(2, "0"), label: "Publications" },
-  { value: papers.map(p => p.publisher).join(" · "), label: "Publishers" },
-  { value: `${Math.min(...years)}–${Math.max(...years)}`, label: "Active years" },
-];
+function paperStats(papers: Paper[]) {
+  const years = papers.map(p => yearOf(p.date)).filter(Number.isFinite);
+  return [
+    { value: String(papers.length).padStart(2, "0"), label: "Publications" },
+    { value: papers.map(p => p.publisher).join(" · "), label: "Publishers" },
+    { value: years.length ? `${Math.min(...years)}–${Math.max(...years)}` : "—", label: "Active years" },
+  ];
+}
 
 // Paper first page shown as a tilted sheet stacked on a second sheet
 function DocPreview({ paper }: { paper: Paper }) {
@@ -74,13 +33,13 @@ function DocPreview({ paper }: { paper: Paper }) {
         className="absolute inset-0 rounded-xl overflow-hidden -rotate-[3deg] transition-transform duration-500 group-hover:rotate-0 group-hover:-translate-y-1"
         style={{ border: "1px solid var(--border-alt)", backgroundColor: "#fff", boxShadow: `0 20px 40px rgba(0,0,0,0.25), 0 0 30px ${paper.accent}20` }}
       >
-        <Image
+        {paper.image && <Image
           src={paper.image}
           alt={`${paper.title} first page`}
           fill
           sizes="280px"
           className="object-cover object-top"
-        />
+        />}
         <div className="absolute inset-x-0 bottom-0 h-1/3" style={{ background: "linear-gradient(180deg, transparent, rgba(255,255,255,0.95))" }} />
         <span
           className="absolute bottom-2.5 left-2.5 px-2 py-0.5 rounded-md text-[10px] font-bold tracking-wider"
@@ -93,7 +52,9 @@ function DocPreview({ paper }: { paper: Paper }) {
   );
 }
 
-export function Research() {
+/** `profileUrl` is the ResearchGate link from the profile's socials ("" hides those buttons). */
+export function Research({ papers, profileUrl }: { papers: Paper[]; profileUrl: string }) {
+  const stats = paperStats(papers);
   const sectionRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
@@ -116,7 +77,7 @@ export function Research() {
       });
     }, sectionRef);
     return () => ctx.revert();
-  }, []);
+  }, [papers]);
 
   useEffect(() => {
     if (!selectedPaper) return;
@@ -158,20 +119,20 @@ export function Research() {
               <p className="text-[10px] sm:text-xs uppercase tracking-wider text-gray-500 mt-1">{s.label}</p>
             </div>
           ))}
-          <a href={RESEARCH_GATE_PROFILE_LINK} target="_blank" rel="noopener noreferrer"
+          {profileUrl && <a href={profileUrl} target="_blank" rel="noopener noreferrer"
             className="group/rg col-span-3 sm:col-span-1 flex items-center justify-center gap-2 rounded-2xl px-6 py-4 text-sm font-semibold text-white transition-all hover:-translate-y-0.5"
             style={{ background: "linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-cyan))", boxShadow: "0 0 24px rgba(6,182,212,0.3)" }}
           >
             <UserRound size={16} /> ResearchGate
             <ArrowUpRight size={15} className="transition-transform group-hover/rg:translate-x-0.5 group-hover/rg:-translate-y-0.5" />
-          </a>
+          </a>}
         </div>
 
         {/* Publication rows */}
         <div ref={listRef} className="flex flex-col gap-6">
           {papers.map((paper, i) => (
             <article
-              key={paper.title}
+              key={paper.id}
               className="group relative overflow-hidden rounded-2xl p-6 md:p-8 glass-card transition-all duration-500 grid gap-6 md:gap-8 md:grid-cols-[72px_1fr_260px] items-center"
               onMouseEnter={e => {
                 e.currentTarget.style.borderColor = `${paper.accent}40`;
@@ -194,7 +155,7 @@ export function Research() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="text-sm font-semibold tracking-wider" style={{ color: paper.accent }}>
-                  {paper.duration.split(" ").pop()}
+                  {yearOf(paper.date) || paper.date}
                 </span>
               </div>
 
@@ -204,10 +165,10 @@ export function Research() {
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-semibold"
                     style={{ backgroundColor: `${paper.accent}15`, border: `1px solid ${paper.accent}30`, color: paper.accent }}
                   >
-                    <BookOpen size={12} /> {paper.publisherFull}
+                    <BookOpen size={12} /> {paper.publisherFull || paper.publisher}
                   </span>
                   <span className="flex items-center gap-1.5 text-gray-500">
-                    <Calendar size={12} /> {paper.duration}
+                    <Calendar size={12} /> {paper.date}
                   </span>
                 </div>
 
@@ -222,7 +183,7 @@ export function Research() {
                 </p>
 
                 <div className="flex flex-wrap gap-2 mb-5">
-                  {paper.keywords.map(k => (
+                  {paper.tags.map(k => (
                     <span key={k} className="px-2.5 py-1 text-xs rounded-md font-medium"
                       style={{ backgroundColor: "var(--tag-bg)", border: "1px solid var(--tag-border)", color: "var(--text-muted)" }}
                     >
@@ -232,12 +193,12 @@ export function Research() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
-                  <a href={paper.paper} target="_blank" rel="noopener noreferrer"
+                  {paper.paperUrl && <a href={paper.paperUrl} target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm text-white font-semibold transition-all hover:-translate-y-0.5"
                     style={{ backgroundColor: paper.accent, boxShadow: `0 0 20px ${paper.accent}40` }}
                   >
                     Read paper <ArrowUpRight size={14} />
-                  </a>
+                  </a>}
                   <button type="button" onClick={() => setSelectedPaper(paper)}
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:-translate-y-0.5"
                     style={{ backgroundColor: "var(--tag-bg)", border: "1px solid var(--border-hover)", color: "var(--color-text)" }}
@@ -287,10 +248,10 @@ export function Research() {
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-semibold"
                     style={{ backgroundColor: `${selectedPaper.accent}15`, border: `1px solid ${selectedPaper.accent}30`, color: selectedPaper.accent }}
                   >
-                    <BookOpen size={12} /> {selectedPaper.publisherFull}
+                    <BookOpen size={12} /> {selectedPaper.publisherFull || selectedPaper.publisher}
                   </span>
                   <span className="flex items-center gap-1.5 text-gray-500">
-                    <Calendar size={12} /> {selectedPaper.duration}
+                    <Calendar size={12} /> {selectedPaper.date}
                   </span>
                 </div>
 
@@ -308,7 +269,7 @@ export function Research() {
                 </div>
 
                 <div className="flex flex-wrap gap-2 mb-7">
-                  {selectedPaper.keywords.map(k => (
+                  {selectedPaper.tags.map(k => (
                     <span key={k} className="px-2.5 py-1 text-xs rounded-md font-medium"
                       style={{ backgroundColor: "var(--tag-bg)", border: "1px solid var(--tag-border)", color: "var(--text-muted)" }}
                     >
@@ -318,18 +279,18 @@ export function Research() {
                 </div>
 
                 <div className="flex flex-wrap gap-3">
-                  <a href={selectedPaper.paper} target="_blank" rel="noopener noreferrer"
+                  {selectedPaper.paperUrl && <a href={selectedPaper.paperUrl} target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm text-white font-semibold transition-all hover:-translate-y-0.5"
                     style={{ backgroundColor: selectedPaper.accent, boxShadow: `0 0 20px ${selectedPaper.accent}40` }}
                   >
                     Read paper <ArrowUpRight size={14} />
-                  </a>
-                  <a href={selectedPaper.profile} target="_blank" rel="noopener noreferrer"
+                  </a>}
+                  {profileUrl && <a href={profileUrl} target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:-translate-y-0.5"
                     style={{ backgroundColor: "var(--overlay-bg)", border: "1px solid var(--border-hover)", color: "var(--color-text)" }}
                   >
                     <UserRound size={14} /> ResearchGate Profile
-                  </a>
+                  </a>}
                 </div>
               </div>
 

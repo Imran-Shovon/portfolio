@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Sora } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { getSiteContent } from "@/lib/content";
 import "./globals.css";
 
 const inter = Inter({
@@ -13,10 +14,19 @@ const sora = Sora({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Shovon | Premium Portfolio",
-  description: "Personal premium portfolio of Md Shovon Biswas - Frontend Developer & Research Enthusiast.",
-};
+/** Title and description come from the profile's SEO fields in the admin dashboard. */
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const { profile } = await getSiteContent();
+    return {
+      title: profile.seo.title || profile.fullName,
+      description: profile.seo.description || undefined,
+    };
+  } catch {
+    // The page shows the error; metadata shouldn't add a second failure.
+    return { title: "Portfolio" };
+  }
+}
 
 export default function RootLayout({
   children,

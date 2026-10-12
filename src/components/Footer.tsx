@@ -1,20 +1,12 @@
 "use client";
 
-import { GithubIcon, LinkedinIcon } from "@/components/icons";
-import { ChevronRight, Mail } from "lucide-react";
+import { BrandName } from "@/components/BrandName";
+import { SocialIcon } from "@/components/SocialIcon";
+import type { Profile } from "@/lib/content-types";
+import type { NavLink } from "@/lib/navigation";
+import { ChevronRight } from "lucide-react";
 
-const quickLinks = [
-  { name: "Home", href: "/#home" },
-  { name: "About", href: "/#about" },
-  { name: "Skills", href: "/#skills" },
-  { name: "Experience", href: "/#experience" },
-  { name: "Projects", href: "/#projects" },
-  { name: "Education", href: "/#education" },
-  { name: "Research", href: "/#research" },
-  { name: "Contact", href: "/#contact" },
-];
-
-export function Footer() {
+export function Footer({ profile, links: quickLinks }: { profile: Profile; links: NavLink[] }) {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
   const year = new Date().getFullYear();
 
@@ -34,36 +26,18 @@ export function Footer() {
               className="text-2xl font-bold mb-4"
               style={{ fontFamily: "var(--font-sora)" }}
             >
-              <span style={{ color: "var(--color-accent-blue)" }}>S</span>
-              <span style={{ color: "var(--color-text)" }}>hovon</span>
-              <span style={{ color: "var(--color-accent-cyan)" }}>.</span>
+              <BrandName name={profile.shortName} />
             </div>
             <p className="text-sm text-gray-500 leading-relaxed mb-5">
-              Frontend Developer & Research Enthusiast. Building premium digital
-              experiences with passion and precision.
+              {profile.footerTagline}
             </p>
             <div className="flex gap-3">
-              {[
-                {
-                  icon: <GithubIcon size={18} />,
-                  href: "https://github.com/Imran-Shovon",
-                  label: "GitHub",
-                },
-                {
-                  icon: <LinkedinIcon size={18} />,
-                  href: "https://www.linkedin.com/in/shovon-biswas/",
-                  label: "LinkedIn",
-                },
-                {
-                  icon: <Mail size={18} />,
-                  href: "mailto:shovonbiswas.cse@gmail.com",
-                  label: "Email",
-                },
-              ].map(({ icon, href, label }) => (
+              {profile.socials.map(({ platform, url, label }) => (
                 <a
-                  key={label}
-                  href={href}
+                  key={`${platform}-${url}`}
+                  href={url}
                   target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   className="p-2.5 rounded-xl text-gray-600 transition-all duration-300"
                   style={{
@@ -80,7 +54,7 @@ export function Footer() {
                     e.currentTarget.style.borderColor = "var(--border)";
                   }}
                 >
-                  {icon}
+                  <SocialIcon platform={platform} size={18} />
                 </a>
               ))}
             </div>
@@ -118,21 +92,21 @@ export function Footer() {
               Contact
             </h4>
             <div className="flex flex-col gap-3 text-sm text-gray-500">
-              <div>
+              {profile.contact.email && <div>
                 📧{" "}
                 <a
-                  href="mailto:shovonbiswas.cse@gmail.com"
+                  href={`mailto:${profile.contact.email}`}
                   className="transition-colors"
                   onMouseEnter={(e) =>
                     (e.currentTarget.style.color = "var(--color-text)")
                   }
                   onMouseLeave={(e) => (e.currentTarget.style.color = "")}
                 >
-                  shovonbiswas.cse@gmail.com
+                  {profile.contact.email}
                 </a>
-              </div>
-              <div>📍 Dhaka, Bangladesh</div>
-              <div>🕒 Available for freelance & full-time</div>
+              </div>}
+              {profile.contact.location && <div>📍 {profile.contact.location}</div>}
+              {profile.availability && <div>🕒 {profile.availability}</div>}
             </div>
           </div>
         </div>
@@ -143,7 +117,7 @@ export function Footer() {
           style={{ borderTop: "1px solid var(--border)" }}
         >
           <p className="text-xs text-gray-600">
-            © {year} Md Shovon Biswas. All rights reserved. Built with Next.js &
+            © {year} {profile.fullName}. All rights reserved. Built with Next.js &
             GSAP.
           </p>
 

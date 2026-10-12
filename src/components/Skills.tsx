@@ -3,64 +3,12 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Code, Database, Cpu, BookOpen } from "lucide-react";
+import { Code } from "lucide-react";
 import { TextReveal } from "@/components/ScrollReveal";
+import type { SkillCategory } from "@/lib/content-types";
+import { ICONS } from "@/lib/icons";
 
 gsap.registerPlugin(ScrollTrigger);
-
-const skillCategories = [
-  {
-    title: "Frontend",
-    icon: Code,
-    color: "var(--color-accent-blue)",
-    skills: [
-      { name: "HTML / CSS", level: 95 },
-      { name: "JavaScript / TypeScript", level: 90 },
-      { name: "React / Next.js", level: 88 },
-      { name: "Tailwind CSS", level: 92 },
-      { name: "Angular", level: 72 },
-      { name: "Astro", level: 70 },
-      { name: "GSAP", level: 80 },
-    ],
-  },
-  {
-    title: "Backend",
-    icon: Database,
-    color: "var(--color-accent-purple)",
-    skills: [
-      { name: "Node.js", level: 80 },
-      { name: "Express.js", level: 78 },
-      { name: "REST APIs", level: 85 },
-    ],
-  },
-  {
-    title: "Tools & DevOps",
-    icon: Cpu,
-    color: "var(--color-accent-cyan)",
-    skills: [
-      { name: "Git / GitHub", level: 90 },
-      { name: "Figma", level: 75 },
-      { name: "VS Code", level: 95 },
-      { name: "Bootstrap", level: 85 },
-    ],
-  },
-  {
-    title: "Research / Academic",
-    icon: BookOpen,
-    color: "#F59E0B",
-    skills: [
-      { name: "Data Analysis", level: 78 },
-      { name: "Machine Learning", level: 70 },
-      { name: "Research Writing", level: 82 },
-    ],
-  },
-];
-
-const techBadges = [
-  "HTML", "CSS", "JavaScript", "TypeScript", "React", "Next.js", "Angular", "Astro",
-  "Tailwind CSS", "Bootstrap", "GSAP", "Node.js", "Express", "Git", "GitHub", "Figma",
-  "Data Analysis", "Machine Learning", "Research Writing", "VS Code",
-];
 
 function TechBadge({ tech }: { tech: string }) {
   return (
@@ -68,7 +16,7 @@ function TechBadge({ tech }: { tech: string }) {
   );
 }
 
-export function Skills() {
+export function Skills({ categories, techBadges }: { categories: SkillCategory[]; techBadges: string[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
@@ -84,7 +32,7 @@ export function Skills() {
       );
     }, sectionRef);
     return () => ctx.revert();
-  }, []);
+  }, [categories]);
 
   return (
     <section id="skills" ref={sectionRef} className="py-24 relative" style={{ backgroundColor: "var(--color-surface)" }}>
@@ -102,7 +50,7 @@ export function Skills() {
         </TextReveal>
 
         {/* Tech Carousel */}
-        <div className="tech-carousel mb-14">
+        {techBadges.length > 0 && <div className="tech-carousel mb-14">
           <div className="tech-carousel-track">
             {[...techBadges, ...techBadges].map((tech, index) => (
               <div
@@ -115,13 +63,15 @@ export function Skills() {
               </div>
             ))}
           </div>
-        </div>
+        </div>}
 
         {/* Skill Cards */}
         <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {skillCategories.map(({ title, icon: Icon, color, skills }) => (
+          {categories.map(({ id, title, icon, color, skills }) => {
+            const Icon = ICONS[icon] ?? Code;
+            return (
             <div
-              key={title}
+              key={id}
               className="p-6 rounded-2xl transition-all duration-300 glass-card cursor-default"
               onMouseEnter={e => (e.currentTarget.style.borderColor = `${color}40`)}
               onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--border)")}
@@ -154,7 +104,8 @@ export function Skills() {
                 ))}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

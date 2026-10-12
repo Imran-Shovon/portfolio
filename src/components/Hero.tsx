@@ -4,8 +4,9 @@ import gsap from "gsap";
 import { ArrowRight, Download } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import type { Profile } from "@/lib/content-types";
 
-export function Hero() {
+export function Hero({ profile }: { profile: Profile }) {
   const greetRef = useRef<HTMLParagraphElement>(null);
   const title1Ref = useRef<HTMLHeadingElement>(null);
   const title2Ref = useRef<HTMLDivElement>(null);
@@ -123,7 +124,7 @@ export function Hero() {
               className="text-base md:text-lg font-semibold tracking-widest uppercase mb-4"
               style={{ color: "var(--color-accent-blue)" }}
             >
-              Hi, I&apos;m Shovon
+              {profile.greeting}
             </p>
 
             <h1
@@ -131,7 +132,7 @@ export function Hero() {
               className="text-5xl font-bold leading-tight mb-2 text-white"
               style={{ fontFamily: "var(--font-sora)" }}
             >
-              Frontend Developer
+              {profile.headline}
             </h1>
 
             <div
@@ -139,7 +140,7 @@ export function Hero() {
               className="text-4xl font-bold leading-tight mb-8"
               style={{ fontFamily: "var(--font-sora)" }}
             >
-              <span className="text-gray-500">&amp;&nbsp;</span>
+              {profile.subHeadline && <span className="text-gray-500">&amp;&nbsp;</span>}
               <span
                 style={{
                   background:
@@ -148,7 +149,7 @@ export function Hero() {
                   WebkitTextFillColor: "transparent",
                 }}
               >
-                Research Enthusiast
+                {profile.subHeadline}
               </span>
             </div>
 
@@ -156,9 +157,7 @@ export function Hero() {
               ref={descRef}
               className="text-base md:text-lg text-gray-400 max-w-xl mx-auto lg:mx-0 leading-relaxed mb-10"
             >
-              Building premium digital experiences with a focus on seamless
-              interactions, elegant UI, and robust technology. Passionate about
-              crafting interfaces that inspire.
+              {profile.heroDescription}
             </p>
 
             {/* CTA Buttons */}
@@ -181,9 +180,10 @@ export function Hero() {
                   className="group-hover:translate-x-1 transition-transform"
                 />
               </a>
-              <a
-                href="/resume.pdf"
+              {profile.resumeUrl && <a
+                href={profile.resumeUrl}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold transition-all duration-300 border"
                 style={{
                   borderColor: "var(--border-alt)",
@@ -202,7 +202,7 @@ export function Hero() {
                   size={18}
                   className="group-hover:-translate-y-0.5 transition-transform"
                 />
-              </a>
+              </a>}
               {/* <a
                 href="#contact"
                 className="group inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold transition-all duration-300 border"
@@ -271,7 +271,7 @@ export function Hero() {
 
           {/* Profile Visual */}
           <div ref={profileRef} className="w-full lg:w-2/5 flex justify-center">
-            <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-[380px] lg:h-[380px]">
+            {profile.photo && <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-[380px] lg:h-[380px]">
               <div className="absolute inset-0 rounded-full border border-blue-500/20 animate-[spin_12s_linear_infinite]">
                 <div
                   className="absolute top-0 left-1/2 w-3 h-3 rounded-full -translate-x-1/2 -translate-y-1/2"
@@ -311,15 +311,15 @@ export function Hero() {
                 style={{ border: "1px solid var(--border)" }}
               >
                 <Image
-                  src="/image/shovon.jpeg"
-                  alt="Imran Shovon"
+                  src={profile.photo}
+                  alt={profile.fullName}
                   fill
                   sizes="(max-width: 640px) 100vw, 380px"
                   className="object-cover object-top"
                   priority
                 />
               </div>
-            </div>
+            </div>}
           </div>
         </div>
 

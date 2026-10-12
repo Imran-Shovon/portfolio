@@ -5,18 +5,9 @@ import gsap from "gsap";
 import { Menu, X, Sun, Moon, Monitor, Check } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BrandName } from "@/components/BrandName";
 import { useTheme, type Theme } from "@/components/ThemeProvider";
-
-const navLinks = [
-  { name: "Home", href: "/#home" },
-  { name: "About", href: "/#about" },
-  { name: "Skills", href: "/#skills" },
-  { name: "Experience", href: "/#experience" },
-  { name: "Projects", href: "/#projects" },
-  { name: "Education", href: "/#education" },
-  { name: "Research", href: "/#research" },
-  { name: "Contact", href: "/#contact" },
-];
+import type { NavLink } from "@/lib/navigation";
 
 const themeOptions: { id: Theme; label: string; Icon: typeof Sun }[] = [
   { id: "dark", label: "Dark", Icon: Moon },
@@ -24,7 +15,7 @@ const themeOptions: { id: Theme; label: string; Icon: typeof Sun }[] = [
   { id: "system", label: "System", Icon: Monitor },
 ];
 
-export function Navbar() {
+export function Navbar({ links: navLinks, brand, resumeUrl }: { links: NavLink[]; brand: string; resumeUrl: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
@@ -46,7 +37,7 @@ export function Navbar() {
       const el = document.getElementById(ids[i]);
       if (el && window.scrollY >= el.offsetTop - 120) { setActive(ids[i]); break; }
     }
-  }, []);
+  }, [navLinks]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -113,9 +104,7 @@ export function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="text-2xl font-bold tracking-tight select-none" style={{ fontFamily: "var(--font-sora)" }}>
-          <span style={{ color: "var(--color-accent-blue)" }}>S</span>
-          <span style={{ color: "var(--color-text)" }}>HOVON</span>
-          <span style={{ color: "var(--color-accent-cyan)" }}>.</span>
+          <BrandName name={brand} uppercase />
         </Link>
 
         {/* Desktop Nav */}
@@ -197,8 +186,8 @@ export function Navbar() {
           </div>
 
           {/* Resume */}
-          <a
-            href="/resume.pdf"
+          {resumeUrl && <a
+            href={resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 border"
@@ -217,7 +206,7 @@ export function Navbar() {
             }}
           >
             Resume
-          </a>
+          </a>}
         </nav>
 
         {/* Mobile: theme toggle + hamburger */}
@@ -302,8 +291,8 @@ export function Navbar() {
               </Link>
             );
           })}
-          <a
-            href="/resume.pdf"
+          {resumeUrl && <a
+            href={resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="text-center px-5 py-3 rounded-full text-white font-semibold mt-2 transition-all duration-300"
@@ -313,7 +302,7 @@ export function Navbar() {
             }}
           >
             Resume
-          </a>
+          </a>}
         </div>
       </div>
     </header>

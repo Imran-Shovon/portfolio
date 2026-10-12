@@ -1,11 +1,22 @@
 ---
 name: portfolio
-description: Conventions for Md Shovon Biswas's single-page Next.js 16 + Tailwind v4 + GSAP portfolio. Use when adding or editing a section (Hero, About, Skills, Experience, Projects, Education, Research, Contact), updating portfolio content (jobs, projects, papers, skills, contact info), changing theme colors/tokens, or adding animations in this repo.
+description: Conventions for Md Shovon Biswas's Next.js 16 + Tailwind v4 + GSAP portfolio, whose content comes from the portfolio-backend API and is edited in the portfolio-admin dashboard. Use when adding or editing a section (Hero, About, Skills, Experience, Projects, Education, Research, Contact), changing how content is fetched or rendered, the contact form, revalidation, theme colors/tokens, or animations in this repo.
 ---
 
 # Portfolio project guide
 
-A single-page personal portfolio. Everything renders from `src/app/page.tsx`, which stacks section components in order. There is no backend, no CMS and no tests. Content is hardcoded in each component file.
+A personal portfolio: the home page (`src/app/page.tsx`) stacks section components, and `/projects` lists every project. **All content comes from the content API** (`../portfolio-backend`, site slug `shovon`) and is edited in the admin dashboard (`../portfolio-admin`). Components hold no content, only markup and animation. There are no tests in this repo.
+
+## How content flows
+
+1. `src/lib/content.ts` → `getSiteContent()` fetches `GET ${CONTENT_API_URL}/public/sites/${SITE_SLUG}` on the server, cached with tag `site-content` (hourly fallback revalidation). Wrapped in React `cache`, so metadata and page share one request.
+2. Server pages (`app/page.tsx`, `app/projects/page.tsx`) and `generateMetadata` in `layout.tsx` call it and pass slices to the `"use client"` section components as props.
+3. A section whose `site.sections[key]` is `false` isn't rendered, and `getNavLinks(sections)` (`src/lib/navigation.ts`) drops its navbar/footer link. `/projects` 404s when projects are off.
+4. After every save in the dashboard, the backend `POST`s `/api/revalidate` with `x-revalidate-secret`. `app/api/revalidate/route.ts` checks it against `REVALIDATE_SECRET` and calls `revalidateTag("site-content", { expire: 0 })`.
+5. The Contact form `POST`s from the browser to `${CONTENT_API_URL}/public/sites/${SITE_SLUG}/messages` (the URL is passed down as the `endpoint` prop). The API only accepts origins listed in the site's **Allowed origins** (dashboard → Site settings); messages appear under Messages in the dashboard.
+6. `app/error.tsx` shows "Content is unavailable" if the API can't be reached. **`npm run build` needs the API running**, because pages are prerendered from it.
+
+Env (`.env.local`, template in `.env.example`): `CONTENT_API_URL`, `SITE_SLUG`, `REVALIDATE_SECRET`. Types for the payload live in `src/lib/content-types.ts`; change them together with the backend.
 
 ## Stack
 
@@ -21,37 +32,47 @@ A single-page personal portfolio. Everything renders from `src/app/page.tsx`, wh
 
 | File | Role |
 |---|---|
-| `src/app/layout.tsx` | html/body, fonts, `metadata`, wraps children in `ThemeProvider`. `<html data-theme="dark">` is the SSR default. |
-| `src/app/page.tsx` | Composes `PageLoader`, `BackToTop`, `Navbar`, then the sections, then `Footer`. |
+| `src/app/layout.tsx` | html/body, fonts, `generateMetadata` (from the profile's SEO fields), wraps children in `ThemeProvider`. `<html data-theme="dark">` is the SSR default. |
+| `src/app/page.tsx` | Async server component: fetches content, composes `PageLoader`, `BackToTop`, `Navbar`, the enabled sections, then `Footer`. |
+| `src/app/projects/page.tsx` | All projects (`<Projects>` without `limit`). |
+| `src/app/api/revalidate/route.ts` | Revalidation webhook for the backend. |
+| `src/lib/content.ts` / `content-types.ts` | API fetch + payload types. |
+| `src/lib/navigation.ts` | `getNavLinks(sections)`: the single list of navbar/footer links. |
+| `src/lib/icons.ts` | Icon name → lucide component for skill categories and About stats. Must match `portfolio-admin/src/lib/icons.ts`. |
+| `src/components/BrandName.tsx` | Logo text ("S" accent + rest + cyan dot) from `profile.shortName`. |
+| `src/components/SocialIcon.tsx` | Icon and hover color per social platform. |
 | `src/app/globals.css` | Design tokens (dark and light), glass utilities, tech ticker CSS, light-mode overrides, keyframes. |
 | `src/components/ThemeProvider.tsx` | `useTheme()` returns `{ theme, setTheme }`, with `"dark" \| "light" \| "system"`. Persists to `localStorage["portfolio-theme"]` and sets `data-theme` on `<html>`. |
 | `src/components/ScrollReveal.tsx` | `ScrollReveal` (fade/slide wrapper) and `TextReveal` (clip-path heading reveal). |
-| `src/components/Navbar.tsx` | Fixed header, `navLinks` array, scroll-spy active state, theme dropdown (desktop and mobile copies), Resume link. |
-| `src/components/Footer.tsx` | Brand, a duplicate `quickLinks` array, contact snippet. |
-| `src/components/<Section>.tsx` | One file per section, each with its data array at the top. |
-| `public/image/` | `shovon.jpeg` (hero photo); `paper/*.png` (research thumbnails). |
+| `src/components/Navbar.tsx` | Fixed header, `links`/`brand` props, scroll-spy active state, theme dropdown (desktop and mobile copies), Resume link. |
+| `src/components/Footer.tsx` | Brand, tagline, socials, quick links, contact snippet (all from props). |
+| `src/components/<Section>.tsx` | One file per section. Receives its data as props; no hardcoded content. |
+| `public/image/` | Seeded images: `shovon.jpeg`, `project/*.png`, `paper/*.png`. Content may point here with root-relative paths; images uploaded in the dashboard are served by the API (`next.config.ts` allows its `/uploads/**`). |
 
 ## Where content lives
 
-| To change… | Edit |
+Content is edited in the **admin dashboard** (http://localhost:3001), not in code:
+
+| On the site | Dashboard |
 |---|---|
-| Hero headline, tagline, CTA | `Hero.tsx` (JSX, no data array) |
-| Bio paragraphs, trait tags, stats | `About.tsx`: `stats` array plus JSX |
-| Skill bars / ticker words | `Skills.tsx`: `skillCategories`, `techBadges` |
-| Jobs | `Experience.tsx`: `experiences` (`role, company, duration, type, accent, responsibilities[], tech[]`) |
-| Projects | `Projects.tsx`: `projects` (`title, duration, image, description, tech[], accent, live, github`) |
-| Degrees | `Education.tsx`: `educationData` |
-| Papers | `Research.tsx`: `papers` (`title, duration, image, description, tags[], profile, paper`). Link URLs are constants at the top of the file. |
-| Email, phone, location, socials | **Both** `Contact.tsx` **and** `Footer.tsx`, since they're duplicated |
-| Page title / SEO description | `metadata` in `layout.tsx` |
-| Loader tagline | `PageLoader.tsx` |
+| Hero greeting, headline, sub-headline, description, photo, loader tagline | Profile → Hero |
+| Bio paragraphs, traits, stats; name used in logo/footer | Profile → About |
+| Skills ticker words | Profile → Skills ticker |
+| Contact heading/blurb, email, phone, location, socials, footer tagline, availability | Profile → Contact & socials |
+| Resume button | Profile → Resume (empty hides the button) |
+| Page title / description | Profile → SEO |
+| Skill bars, jobs, projects, degrees, papers | Skills / Experience / Projects / Education / Publications (reorder, hide, edit) |
+| Which sections exist | Site settings → Visibility |
+
+Section headings ("Who I Am", "My Work", …) and layout are still code.
 
 ## Component conventions
 
 Match these when writing new code:
 
 - Every component starts with `"use client"` and uses a **named export** (`export function Research()`). Don't use default exports, except for the app route files.
-- Keep static data as a `const` array above the component in the same file. Derive types with `type Paper = (typeof papers)[number];` instead of writing interfaces.
+- **No content in components.** Take data as props typed from `@/lib/content-types`. Server pages fetch with `getSiteContent()` and pass slices down. Key lists by the item's `id`, and include the data prop in the GSAP `useEffect` deps so animations re-bind when content changes.
+- Optional content must degrade: hide a button or block when its value is `""` (resume, live/GitHub links, paper URL, ResearchGate, contact items), never render an empty link.
 - Imports go through `@/components/...`.
 - **Colors come from CSS variables in inline `style={{}}`**, not from Tailwind color classes. For example: `style={{ color: "var(--color-accent-blue)" }}`, `style={{ background: "var(--tag-bg)", border: "1px solid var(--border)" }}`. Tailwind handles layout, spacing, typography and radius.
 - **Hover effects mutate inline styles** in `onMouseEnter`/`onMouseLeave` handlers, then reset to the token on leave:
@@ -123,11 +144,11 @@ export function NewSection() {
 }
 ```
 
-**When you add a section, update all four places:**
-1. Create `src/components/NewSection.tsx`.
-2. Render it in `src/app/page.tsx` in the right position.
-3. Add `{ name, href: "#id" }` to `navLinks` in `Navbar.tsx`.
-4. Add the same entry to `quickLinks` in `Footer.tsx`.
+**When you add a section:**
+1. Create `src/components/NewSection.tsx` taking its data as props.
+2. Render it in `src/app/page.tsx` in the right position (behind its `sections` flag if it can be switched off).
+3. Add `{ name, href: "/#id", section? }` to `ALL_LINKS` in `src/lib/navigation.ts` (navbar and footer both use it).
+4. If it has editable content, it needs a model and endpoint in `portfolio-backend` and a form in `portfolio-admin` first (see their skills), plus a type in `content-types.ts`.
 
 The `id` must match the `href`, because the navbar scroll-spy finds sections by `document.getElementById`.
 
@@ -161,15 +182,16 @@ npm run build   # type-check and production build
 npm run dev     # http://localhost:3000
 ```
 
-There is no test suite. After a visual change, check the page in **both dark and light themes** (use the navbar theme toggle) and at mobile width (below 768px, where the hamburger menu shows).
+Start the API first (`cd ../portfolio-backend && npm run dev`, MongoDB on :27017). There is no test suite. After a visual change, check the page in **both dark and light themes** (use the navbar theme toggle) and at mobile width (below 768px, where the hamburger menu shows).
 
 ## Gotchas and known issues
 
-- **Hex-alpha on CSS vars is invalid.** In `Experience.tsx` and `Skills.tsx`, `accent`/`color` is sometimes `"var(--color-accent-blue)"`. That makes `${accent}40` produce `var(--color-accent-blue)40`, which the browser silently ignores. The tinted backgrounds, hover borders and glows only work for the raw-hex accents. For new code, use hex accents, or `color-mix(in srgb, ${accent} 25%, transparent)`, which works with both.
-- **`/resume.pdf` is linked** from the Navbar and Hero, but `public/resume.pdf` doesn't exist yet.
-- **The Contact form is a demo.** `handleSubmit` only toggles a "sent" state for 4s and nothing is sent. Wiring it up needs a Route Handler or Server Action (read the Next 16 docs first) or a third-party form service.
-- Project `live` and `github` may be `""`. The card hides that button, so never use `"#"` as a placeholder. Screenshots live in `public/image/project/`.
-- `Navbar.navLinks` and `Footer.quickLinks` are separate copies, and contact details appear in both `Contact.tsx` and `Footer.tsx`. Keep them in sync.
+- **Hex-alpha on CSS vars is invalid.** `${accent}40` only works when `accent` is hex. Content accents from the API are always 6-digit hex (the dashboard enforces it), but the fixed per-platform colors in `SocialIcon.tsx` and Contact's info items are CSS vars, so their hover tints are silently ignored. Use `color-mix(in srgb, ${color} 25%, transparent)` if you touch them.
+- The Navbar and Hero Resume buttons use `profile.resumeUrl` and are hidden when it's empty. The seeded value `/resume.pdf` doesn't exist in `public/` yet, so upload a PDF under Profile → Resume.
+- The Contact form has a hidden honeypot field `website`. Keep it, since the API silently drops submissions where it's filled. If you serve the site from a new domain, add that origin under Site settings → Allowed origins, or the form gets 403.
+- Project `liveUrl` and `githubUrl` may be `""`. The card hides that button; the API rejects `"#"`.
+- About paragraphs are plain text. The owner's `fullName` is bolded automatically where it appears; other inline highlights aren't supported.
+- Next 16 blocks optimizing images from local IPs; `next.config.ts` sets `dangerouslyAllowLocalIP` only when `CONTENT_API_URL` points at localhost.
 - Tailwind has no `opacity-8` class. Where it appears, the actual value comes from the inline `style={{ opacity: ... }}`.
 - `README.md` is the unchanged create-next-app boilerplate and says the font is Geist, which is wrong.
 - Commented-out blocks in `Hero.tsx` (Contact button, social icons, scroll indicator) were disabled on purpose. Leave them unless asked.

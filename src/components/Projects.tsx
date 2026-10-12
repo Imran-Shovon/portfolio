@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Calendar, ChevronDown, ExternalLink, Lock } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, ChevronDown, ExternalLink, Lock } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { TextReveal } from "@/components/ScrollReveal";
 
@@ -157,7 +158,10 @@ const projects = [
   },
 ];
 
-export function Projects() {
+// `limit` shows only the first N projects plus a link to the full /projects page
+export function Projects({ limit }: { limit?: number }) {
+  const visibleProjects = limit ? projects.slice(0, limit) : projects;
+  const hasMore = visibleProjects.length < projects.length;
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -185,16 +189,27 @@ export function Projects() {
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6">
+        {!limit && (
+          <Link href="/#projects"
+            className="inline-flex items-center gap-2 mt-4 mb-8 text-sm font-medium transition-colors"
+            style={{ color: "var(--text-muted)" }}
+            onMouseEnter={e => (e.currentTarget.style.color = "var(--color-text)")}
+            onMouseLeave={e => (e.currentTarget.style.color = "var(--text-muted)")}
+          >
+            <ArrowLeft size={16} /> Back to home
+          </Link>
+        )}
+
         <TextReveal className="flex flex-col items-center mb-16">
           <span className="text-sm font-semibold tracking-widest uppercase mb-3" style={{ color: "var(--color-accent-blue)" }}>My Work</span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 text-center" style={{ fontFamily: "var(--font-sora)" }}>
-            Featured <span style={{ background: "linear-gradient(90deg, var(--color-accent-blue), var(--color-accent-purple))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Projects</span>
+            {limit ? "Featured" : "All"} <span style={{ background: "linear-gradient(90deg, var(--color-accent-blue), var(--color-accent-purple))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Projects</span>
           </h2>
           <div className="w-16 h-1 rounded-full" style={{ background: "linear-gradient(90deg, var(--color-accent-blue), var(--color-accent-purple))" }} />
         </TextReveal>
 
         <div ref={cardsRef} className="flex flex-col gap-8">
-          {projects.map((project, i) => {
+          {visibleProjects.map((project, i) => {
             const isOpen = expanded === project.title;
             return (
               <article
@@ -299,6 +314,18 @@ export function Projects() {
             );
           })}
         </div>
+
+        {hasMore && (
+          <div className="flex justify-center mt-12">
+            <Link href="/projects"
+              className="group/btn inline-flex items-center gap-2 px-7 py-3 rounded-full text-sm text-white font-semibold transition-all hover:-translate-y-0.5"
+              style={{ background: "linear-gradient(90deg, var(--color-accent-blue), var(--color-accent-purple))", boxShadow: "0 0 24px rgba(59,130,246,0.35)" }}
+            >
+              View all {projects.length} projects
+              <ArrowRight size={16} className="transition-transform duration-300 group-hover/btn:translate-x-1" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

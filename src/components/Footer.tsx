@@ -4,14 +4,14 @@ import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { ChevronRight, Mail } from "lucide-react";
 
 const quickLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Experience", href: "#experience" },
-  { name: "Projects", href: "#projects" },
-  { name: "Education", href: "#education" },
-  { name: "Research", href: "#research" },
-  { name: "Contact", href: "#contact" },
+  { name: "Home", href: "/#home" },
+  { name: "About", href: "/#about" },
+  { name: "Skills", href: "/#skills" },
+  { name: "Experience", href: "/#experience" },
+  { name: "Projects", href: "/#projects" },
+  { name: "Education", href: "/#education" },
+  { name: "Research", href: "/#research" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 export function Footer() {

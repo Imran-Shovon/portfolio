@@ -4,17 +4,18 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
 import { Menu, X, Sun, Moon, Monitor, Check } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useTheme, type Theme } from "@/components/ThemeProvider";
 
 const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Experience", href: "#experience" },
-  { name: "Projects", href: "#projects" },
-  { name: "Education", href: "#education" },
-  { name: "Research", href: "#research" },
-  { name: "Contact", href: "#contact" },
+  { name: "Home", href: "/#home" },
+  { name: "About", href: "/#about" },
+  { name: "Skills", href: "/#skills" },
+  { name: "Experience", href: "/#experience" },
+  { name: "Projects", href: "/#projects" },
+  { name: "Education", href: "/#education" },
+  { name: "Research", href: "/#research" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 const themeOptions: { id: Theme; label: string; Icon: typeof Sun }[] = [
@@ -26,7 +27,8 @@ const themeOptions: { id: Theme; label: string; Icon: typeof Sun }[] = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActive] = useState("home");
+  const pathname = usePathname();
+  const [activeSection, setActive] = useState(pathname.startsWith("/projects") ? "projects" : "home");
   const [themeOpen, setThemeOpen] = useState(false);
 
   const navRef = useRef<HTMLElement>(null);
@@ -39,7 +41,7 @@ export function Navbar() {
   // Active section + scroll glass
   const handleScroll = useCallback(() => {
     setScrolled(window.scrollY > 50);
-    const ids = navLinks.map(l => l.href.replace("#", ""));
+    const ids = navLinks.map(l => l.href.split("#")[1]);
     for (let i = ids.length - 1; i >= 0; i--) {
       const el = document.getElementById(ids[i]);
       if (el && window.scrollY >= el.offsetTop - 120) { setActive(ids[i]); break; }
@@ -119,7 +121,7 @@ export function Navbar() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-4">
           {navLinks.map(({ name, href }) => {
-            const id = href.replace("#", "");
+            const id = href.split("#")[1];
             const isActive = activeSection === id;
             return (
               <Link
@@ -283,7 +285,7 @@ export function Navbar() {
       >
         <div className="px-6 py-6 flex flex-col gap-5">
           {navLinks.map(({ name, href }) => {
-            const id = href.replace("#", "");
+            const id = href.split("#")[1];
             const isActive = activeSection === id;
             return (
               <Link

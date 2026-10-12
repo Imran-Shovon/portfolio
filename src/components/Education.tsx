@@ -3,38 +3,42 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { GraduationCap, Calendar, Award } from "lucide-react";
+import { GraduationCap, Calendar, BookOpen } from "lucide-react";
 import { TextReveal } from "@/components/ScrollReveal";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const educationData = [
   {
-    degree: "Bachelor of Science in Computer Science & Engineering",
-    university: "Banglaesh University of Business and Technology (BUBT)",
+    degree: "Bachelor of Science (B.Sc.) in Computer Science & Engineering",
+    university: "Bangladesh University of Business and Technology (BUBT), Dhaka",
     duration: "2018 – 2022",
-    expectedGrad: "Completed 2022",
-    cgpa: "3.74 / 4.00",
-    achievements: [
-      "Merit Scholarship Recipient (2022, 2023)",
-      "Best Final Year Project Award Nominee",
-      "Dean's List – 3 consecutive semesters",
-      "CSE Society Technical Lead",
-    ],
-    accent: "var(--color-accent-blue)",
+    status: "Completed 2022",
+    grade: "3.74 / 4.00",
+    gradeLabel: "CGPA",
+    description:
+      "I completed my Bachelor's degree in Computer Science and Engineering at BUBT – Bangladesh University of Business and Technology, Dhaka.",
+    accent: "#3b82f6",
   },
   {
-    degree: "Higher Secondary Certificate (HSC)",
-    university: "Chuadanga Govt. College",
+    degree: "Higher Secondary Certificate (HSC), Science",
+    university: "Chuadanga Government College, Chuadanga",
     duration: "2014 – 2016",
-    expectedGrad: "Completed 2016",
-    cgpa: "4.42 / 5.00",
-    achievements: [
-      "Perfect GPA in Science stream",
-      "Board Scholarship recipient",
-      "Science Olympiad – District Champion",
-    ],
-    accent: "var(--color-accent-purple)",
+    status: "Completed 2016",
+    grade: "4.42 / 5.00",
+    gradeLabel: "GPA",
+    description:
+      "I completed my class 12 higher secondary education at Chuadanga Government College, Chuadanga, where I studied Science.",
+    accent: "#8b5cf6",
+  },
+  {
+    degree: "Secondary School Certificate (SSC), Science",
+    university: "Victoria Jubilee High School, Chuadanga",
+    grade: "5.00 / 5.00",
+    gradeLabel: "GPA",
+    description:
+      "I completed my class 10 secondary education at Victoria Jubilee High School, Chuadanga, where I studied Science.",
+    accent: "#06b6d4",
   },
 ];
 
@@ -95,32 +99,29 @@ export function Education() {
                   </div>
 
                   <div className="text-right shrink-0">
-                    <div className="flex items-center gap-2 text-sm text-gray-500 justify-end mb-1">
-                      <Calendar size={13} />
-                      <span>{edu.duration}</span>
-                    </div>
-                    <div className="text-2xl font-bold" style={{ color: edu.accent }}>{edu.cgpa}</div>
-                    <div className="text-xs text-gray-600">CGPA</div>
+                    {edu.duration && (
+                      <div className="flex items-center gap-2 text-sm text-gray-500 justify-end mb-1">
+                        <Calendar size={13} />
+                        <span>{edu.duration}</span>
+                      </div>
+                    )}
+                    <div className="text-2xl font-bold" style={{ color: edu.accent }}>{edu.grade}</div>
+                    <div className="text-xs text-gray-600">{edu.gradeLabel}</div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 text-xs text-gray-600 mb-5">
-                  <span className="px-2 py-1 rounded-full" style={{ backgroundColor: `${edu.accent}15`, color: edu.accent }}>{edu.expectedGrad}</span>
-                </div>
+                {edu.status && (
+                  <div className="flex items-center gap-2 text-xs text-gray-600 mb-5">
+                    <span className="px-2 py-1 rounded-full" style={{ backgroundColor: `${edu.accent}15`, color: edu.accent }}>{edu.status}</span>
+                  </div>
+                )}
 
                 <div>
                   <h4 className="text-sm font-semibold text-gray-400 mb-3 flex items-center gap-2">
-                    <Award size={14} style={{ color: edu.accent }} />
-                    Academic Achievements
+                    <BookOpen size={14} style={{ color: edu.accent }} />
+                    Overview
                   </h4>
-                  <div className="flex flex-col gap-2">
-                    {edu.achievements.map((a, i) => (
-                      <div key={i} className="flex items-center gap-3 text-sm text-gray-400">
-                        <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: edu.accent }} />
-                        {a}
-                      </div>
-                    ))}
-                  </div>
+                  <p className="text-sm text-gray-400 leading-relaxed">{edu.description}</p>
                 </div>
               </div>
             </div>

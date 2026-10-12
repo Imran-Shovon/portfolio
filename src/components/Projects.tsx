@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ExternalLink } from "lucide-react";
+import { Calendar, ChevronDown, ExternalLink, Lock } from "lucide-react";
 import { GithubIcon } from "@/components/icons";
 import { TextReveal } from "@/components/ScrollReveal";
 
@@ -11,75 +12,60 @@ gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
   {
-    title: "Premium E-Commerce Platform",
-    description: "A full-featured e-commerce application with real-time inventory, advanced filtering, and seamless checkout flow. Built with a focus on performance and UX.",
-    tech: ["Next.js", "TypeScript", "Tailwind CSS", "Node.js", "REST API"],
-    gradient: "from-blue-500/20 to-purple-500/20",
-    accent: "var(--color-accent-blue)",
-    live: "#",
-    github: "#",
+    title: "e-KYC – Electronic Know Your Customer",
+    type: "Professional",
+    duration: "Jan 2022 – Present",
+    image: "/image/project/ekyc.png",
+    summary: "A digital eKYC onboarding solution used across multiple banks. I built responsive Angular interfaces and assisted with deployment workflows and DevOps.",
+    description: "As a Junior Software Engineer, I contributed to the development and maintenance of a digital eKYC (Electronic Know Your Customer) solution used across multiple banks. My responsibilities included implementing responsive user interfaces using Angular. I also assisted in deployment workflows and DevOps practices. This role strengthened my foundation in full-stack development and taught me the importance of security, scalability, and performance in financial applications.",
+    tech: ["Angular", ".NET", "SQL", "Nebular", "Bootstrap"],
+    accent: "#3b82f6",
+    live: "https://eaccount.bracbank.com/onboarding/common/welcome",
+    github: "",
   },
   {
-    title: "AI-Powered Dashboard",
-    description: "An analytics dashboard integrating machine learning predictions with interactive data visualizations, real-time updates, and role-based access control.",
-    tech: ["React", "TypeScript", "Chart.js", "Python", "FastAPI"],
-    gradient: "from-purple-500/20 to-cyan-500/20",
-    accent: "var(--color-accent-purple)",
-    live: "#",
-    github: "#",
+    title: "Jachai",
+    type: "Professional",
+    duration: "Jan 2022 – Present",
+    image: "/image/project/jachai.png",
+    summary: "A government-integrated platform for birth certificate verification via proxy APIs. I built Angular frontend components that consume secure endpoints and validate responses.",
+    description: "At Jachai, I worked as a Junior Software Engineer on a government-integrated platform used for birth certificate verification via proxy APIs. I was involved in developing and maintaining frontend components using Angular. My responsibilities included consuming secure API endpoints, handling response validations, and ensuring reliable communication between client and server systems. This role enhanced my understanding of secure data handling, API-driven architectures, and real-world application of digital identity verification in government services.",
+    tech: ["Angular", ".NET", "SQL", "Stored Procedures", "Redux"],
+    accent: "#8b5cf6",
+    live: "",
+    github: "",
   },
   {
-    title: "Research Management System",
-    description: "A collaborative platform for academic researchers to organize papers, track citations, manage team collaborations, and generate academic reports.",
-    tech: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "GSAP"],
-    gradient: "from-cyan-500/20 to-blue-500/20",
-    accent: "var(--color-accent-cyan)",
-    live: "#",
-    github: "#",
-  },
-  {
-    title: "3D Portfolio Showcase",
-    description: "An immersive 3D portfolio experience with interactive elements, particle systems, and smooth scroll-based storytelling using GSAP and Three.js.",
-    tech: ["React", "Three.js", "GSAP", "WebGL", "Vite"],
-    gradient: "from-amber-500/20 to-rose-500/20",
-    accent: "#F59E0B",
-    live: "#",
-    github: "#",
-  },
-  {
-    title: "Real-time Chat Application",
-    description: "A scalable real-time messaging application featuring WebSocket connections, end-to-end encryption, file sharing, and group chat functionality.",
-    tech: ["React", "Node.js", "Socket.io", "MongoDB", "Express"],
-    gradient: "from-rose-500/20 to-purple-500/20",
-    accent: "#F43F5E",
-    live: "#",
-    github: "#",
-  },
-  {
-    title: "Angular Admin Panel",
-    description: "A comprehensive admin panel built with Angular, featuring dynamic theming, drag-and-drop layout customization, and granular permission management.",
-    tech: ["Angular", "TypeScript", "RxJS", "NgRx", "SCSS"],
-    gradient: "from-emerald-500/20 to-cyan-500/20",
-    accent: "#10B981",
-    live: "#",
-    github: "#",
+    title: "Swiggy API Clone",
+    type: "Personal",
+    duration: "2025",
+    image: "/image/project/swiggy-clone.png",
+    summary: "A food delivery interface in React powered by the real-time Swiggy API, showing restaurant listings, menus and live order data.",
+    description: "As part of a personal project, I developed a dynamic food delivery interface using React.js and integrated the real-time Swiggy API to display restaurant listings, menus, and live order data. The project focused on rendering responsive UI components, optimizing API calls, and ensuring smooth user interactions with real-time data updates. This experience helped me strengthen my skills in React hooks, component architecture, API consumption, and performance optimization in single-page applications.",
+    tech: ["React", "Swiggy API", "Redux"],
+    accent: "#06b6d4",
+    live: "https://react-ten-drab.vercel.app/",
+    github: "https://github.com/Imran-Shovon/React.git",
   },
 ];
 
 export function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(
-        cardsRef.current?.children ? Array.from(cardsRef.current.children) : [],
-        { y: 60, opacity: 0, scale: 0.95 },
-        {
-          y: 0, opacity: 1, scale: 1, duration: 0.8, stagger: 0.12, ease: "power3.out",
-          scrollTrigger: { trigger: cardsRef.current, start: "top 80%" },
-        }
-      );
+      Array.from(cardsRef.current?.children ?? []).forEach(card => {
+        gsap.fromTo(
+          card,
+          { y: 60, opacity: 0 },
+          {
+            y: 0, opacity: 1, duration: 0.8, ease: "power3.out",
+            scrollTrigger: { trigger: card, start: "top 85%" },
+          }
+        );
+      });
     }, sectionRef);
     return () => ctx.revert();
   }, []);
@@ -87,7 +73,7 @@ export function Projects() {
   return (
     <section id="projects" ref={sectionRef} className="py-24 relative" style={{ backgroundColor: "var(--color-surface)" }}>
       <div className="absolute inset-0 overflow-hidden -z-0 pointer-events-none">
-        <div className="absolute top-1/2 right-[-5%] w-[500px] h-[500px] rounded-full blur-[160px] opacity-8" style={{ backgroundColor: "var(--color-accent-blue)", opacity: 0.07 }} />
+        <div className="absolute top-1/2 right-[-5%] w-[500px] h-[500px] rounded-full blur-[160px]" style={{ backgroundColor: "var(--color-accent-blue)", opacity: 0.07 }} />
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6">
@@ -99,74 +85,111 @@ export function Projects() {
           <div className="w-16 h-1 rounded-full" style={{ background: "linear-gradient(90deg, var(--color-accent-blue), var(--color-accent-purple))" }} />
         </TextReveal>
 
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {projects.map((project) => (
-            <div
-              key={project.title}
-              className="group relative rounded-2xl overflow-hidden transition-all duration-400 cursor-pointer glass-card"
-              onMouseEnter={e => {
-                (e.currentTarget.style.transform) = "translateY(-6px)";
-                (e.currentTarget.style.borderColor) = `${project.accent}40`;
-                (e.currentTarget.style.boxShadow) = `0 20px 60px ${project.accent}15`;
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget.style.transform) = "";
-                (e.currentTarget.style.borderColor) = "var(--border)";
-                (e.currentTarget.style.boxShadow) = "0 4px 30px rgba(0,0,0,0.12)";
-              }}
-            >
-              {/* Card top gradient strip */}
-              <div className={`h-1 w-full bg-gradient-to-r ${project.gradient}`} style={{ background: `linear-gradient(90deg, ${project.accent}80, transparent)` }} />
-
-              {/* Card body */}
-              <div className="p-6">
-                <div className={`h-44 rounded-xl mb-5 bg-gradient-to-br ${project.gradient} flex items-center justify-center relative overflow-hidden`}
-                  style={{ background: `radial-gradient(circle at 30% 50%, ${project.accent}20, var(--card-solid))` }}
-                >
-                  <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                    <span className="text-7xl font-bold text-white" style={{ fontFamily: "var(--font-sora)", color: project.accent }}>
-                      {project.title.charAt(0)}
-                    </span>
-                  </div>
-                  <div className="relative z-10 px-4 text-center">
-                    <div className="text-4xl mb-2">🚀</div>
-                  </div>
-                  {/* Overlay on hover */}
-                  <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ backgroundColor: "var(--overlay-bg)", backdropFilter: "blur(4px)" }}
+        <div ref={cardsRef} className="flex flex-col gap-8">
+          {projects.map((project, i) => {
+            const isOpen = expanded === project.title;
+            return (
+              <article
+                key={project.title}
+                className="group relative grid lg:grid-cols-2 gap-6 lg:gap-10 items-center p-5 md:p-7 rounded-2xl transition-all duration-300 glass-card"
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = `${project.accent}40`;
+                  e.currentTarget.style.boxShadow = `0 20px 60px ${project.accent}14`;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = "var(--border)";
+                  e.currentTarget.style.boxShadow = "0 4px 30px rgba(0,0,0,0.12)";
+                }}
+              >
+                {/* Screenshot in a browser frame */}
+                <div className={i % 2 === 1 ? "lg:order-2" : ""}>
+                  <div
+                    className="rounded-xl overflow-hidden transition-transform duration-500 group-hover:-translate-y-1"
+                    style={{ border: "1px solid var(--border-alt)", backgroundColor: "var(--card-solid)", boxShadow: `0 16px 40px ${project.accent}1f` }}
                   >
-                    <a href={project.live} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-full text-sm text-white font-medium transition-all"
-                      style={{ backgroundColor: project.accent }}
-                      onClick={e => e.stopPropagation()}
-                    >
-                      <ExternalLink size={14} /> Live Demo
-                    </a>
-                    <a href={project.github} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-full text-sm text-white font-medium transition-all"
-                      style={{ backgroundColor: "var(--overlay-bg)", border: "1px solid var(--border-hover)", color: "var(--color-text)" }}
-                      onClick={e => e.stopPropagation()}
-                    >
-                      <GithubIcon size={14} /> Code
-                    </a>
+                    <div className="flex items-center gap-1.5 px-3 h-7" style={{ borderBottom: "1px solid var(--border)" }}>
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                    </div>
+                    <div className="relative aspect-[1880/862] overflow-hidden">
+                      <Image
+                        src={project.image}
+                        alt={`${project.title} screenshot`}
+                        fill
+                        sizes="(min-width: 1024px) 460px, 100vw"
+                        className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.03]"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <h3 className="text-lg font-semibold text-white mb-2" style={{ fontFamily: "var(--font-sora)" }}>{project.title}</h3>
-                <p className="text-sm text-gray-400 leading-relaxed mb-4">{project.description}</p>
-
-                <div className="flex flex-wrap gap-2">
-                  {project.tech.map(t => (
-                    <span key={t} className="px-2 py-1 text-xs rounded-md font-medium"
-                      style={{ backgroundColor: `${project.accent}15`, color: project.accent, border: `1px solid ${project.accent}25` }}
-                    >
-                      {t}
+                {/* Content */}
+                <div className="flex flex-col">
+                  <div className="flex flex-wrap items-center gap-3 mb-3 text-xs font-medium">
+                    <span className="px-2.5 py-1 rounded-full uppercase tracking-wider" style={{ backgroundColor: `${project.accent}18`, color: project.accent }}>
+                      {project.type}
                     </span>
-                  ))}
+                    <span className="flex items-center gap-1.5 text-gray-500">
+                      <Calendar size={12} /> {project.duration}
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl md:text-2xl font-semibold text-white mb-3 leading-snug" style={{ fontFamily: "var(--font-sora)" }}>
+                    {project.title}
+                  </h3>
+
+                  <p className="text-sm md:text-[15px] text-gray-400 leading-relaxed">
+                    {isOpen ? project.description : project.summary}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setExpanded(isOpen ? null : project.title)}
+                    aria-expanded={isOpen}
+                    className="self-start mt-2 mb-5 inline-flex items-center gap-1 text-xs font-semibold"
+                    style={{ color: project.accent }}
+                  >
+                    {isOpen ? "Show less" : "Read more"}
+                    <ChevronDown size={14} className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+                  </button>
+
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {project.tech.map(t => (
+                      <span key={t} className="px-2.5 py-1 text-xs rounded-md font-medium"
+                        style={{ backgroundColor: "var(--tag-bg)", border: "1px solid var(--tag-border)", color: "var(--text-muted)" }}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3">
+                    {project.live && (
+                      <a href={project.live} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm text-white font-semibold transition-all hover:-translate-y-0.5"
+                        style={{ backgroundColor: project.accent, boxShadow: `0 0 20px ${project.accent}40` }}
+                      >
+                        <ExternalLink size={14} /> Live Demo
+                      </a>
+                    )}
+                    {project.github && (
+                      <a href={project.github} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all hover:-translate-y-0.5"
+                        style={{ backgroundColor: "var(--tag-bg)", border: "1px solid var(--border-hover)", color: "var(--color-text)" }}
+                      >
+                        <GithubIcon size={14} /> Code
+                      </a>
+                    )}
+                    {!project.live && !project.github && (
+                      <span className="inline-flex items-center gap-2 text-xs text-gray-500">
+                        <Lock size={13} /> Private / internal project
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
